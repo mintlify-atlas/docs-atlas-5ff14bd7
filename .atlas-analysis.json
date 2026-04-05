@@ -1,0 +1,115 @@
+{
+  "projectType": "saas",
+  "projectName": "Frappe Books",
+  "projectDescription": "Free, open-source desktop accounting software for small and medium businesses, featuring double-entry accounting, invoicing, POS, inventory management, and financial reports.",
+  "theme": "almond",
+  "primaryColor": "#7c7c7c",
+  "lightColor": "#070707",
+  "darkColor": "#c8c8c8",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "User Guide",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "setup-wizard"
+            ]
+          },
+          {
+            "group": "Core Accounting",
+            "pages": [
+              "accounting/chart-of-accounts",
+              "accounting/journal-entries",
+              "accounting/invoicing",
+              "accounting/payments"
+            ]
+          },
+          {
+            "group": "Inventory & Sales",
+            "pages": [
+              "inventory/items",
+              "inventory/stock-management",
+              "inventory/point-of-sale"
+            ]
+          },
+          {
+            "group": "Reports",
+            "pages": [
+              "reports/general-ledger",
+              "reports/profit-and-loss",
+              "reports/balance-sheet",
+              "reports/trial-balance"
+            ]
+          },
+          {
+            "group": "Settings & Customization",
+            "pages": [
+              "settings/general-settings",
+              "settings/print-templates",
+              "settings/data-import-export"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Developer Guide",
+        "groups": [
+          {
+            "group": "Contributing",
+            "pages": [
+              "developer/architecture",
+              "developer/development-setup",
+              "developer/testing"
+            ]
+          },
+          {
+            "group": "Internals",
+            "pages": [
+              "developer/models-and-schemas",
+              "developer/translations",
+              "developer/building-and-releasing"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Double-entry accounting with general ledger, profit & loss, balance sheet, and trial balance reports",
+    "Invoicing and billing for sales and purchases",
+    "Integrated Point of Sale (POS) with loyalty programs and coupon codes",
+    "Inventory management with stock movements, shipments, and purchase receipts",
+    "Works fully offline as a desktop application (Electron + SQLite)",
+    "Multi-currency and regional tax support (e.g., GST for India)",
+    "Customizable print templates for invoices and reports",
+    "Data import/export via CSV",
+    "Chart of Accounts management",
+    "Multi-language/translation support (18+ languages)"
+  ],
+  "publicApiSurface": [
+    "Dashboard — financial overview with cash flow, expenses, and unpaid invoices",
+    "Sales Invoice — create, edit, and track customer invoices",
+    "Purchase Invoice — manage vendor bills and payables",
+    "Payment — record incoming and outgoing payments",
+    "Journal Entry — manual ledger adjustments",
+    "Chart of Accounts — manage account hierarchy",
+    "General Ledger Report — full transaction history",
+    "Profit and Loss Report — revenue vs. expenses",
+    "Balance Sheet Report — assets, liabilities, and equity",
+    "Trial Balance Report — debit/credit verification",
+    "Point of Sale — retail transaction interface",
+    "Stock Movement — inventory transfers and adjustments",
+    "Shipment / Purchase Receipt — goods in/out tracking",
+    "Item & Item Group — product catalog management",
+    "Party (Customer/Supplier) — contact and vendor records",
+    "Tax — define and apply tax rules",
+    "Print Templates — customize invoice/report layouts",
+    "Import Wizard — bulk data import from CSV",
+    "Settings — accounting, inventory, and POS configuration",
+    "Customize Form — extend fields on existing documents"
+  ]
+}

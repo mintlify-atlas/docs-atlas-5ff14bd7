@@ -1,0 +1,92 @@
+---
+title: "Trial Balance"
+description: "Verify that debits equal credits across all accounts"
+---
+
+The Trial Balance is a verification report that lists the debit and credit totals for every account in your chart of accounts. Its purpose is to confirm that your books are mathematically in balance — a necessary condition before you generate a Profit and Loss statement or Balance Sheet.
+
+<Note>
+  A balanced Trial Balance does not guarantee that transactions were posted to the *correct* accounts, but it does confirm that no debit was posted without a matching credit.
+</Note>
+
+## Navigate to the report
+
+<Steps>
+  <Step title="Open Reports">
+    In the sidebar, click **Reports**.
+  </Step>
+  <Step title="Select Trial Balance">
+    Under the Accounting section, click **Trial Balance**.
+  </Step>
+  <Step title="Set the date range">
+    Enter a **From Date** and **To Date**. Both fields are required. The report defaults to the current fiscal year.
+  </Step>
+  <Step title="Run the report">
+    Click **Run** to generate the trial balance.
+  </Step>
+</Steps>
+
+## Report columns
+
+The Trial Balance splits balances into three time segments — opening, period activity, and closing — each with a debit and credit column.
+
+| Column | Description |
+|---|---|
+| **Account** | The account name from your chart of accounts. |
+| **Opening (Dr)** | Cumulative debit balance for the account before the From Date. |
+| **Opening (Cr)** | Cumulative credit balance for the account before the From Date. |
+| **Debit** | Total debits posted to the account during the selected period. |
+| **Credit** | Total credits posted to the account during the selected period. |
+| **Closing (Dr)** | Running debit total through the To Date (Opening Dr + period Debit). |
+| **Closing (Cr)** | Running credit total through the To Date (Opening Cr + period Credit). |
+
+Accounts are grouped by root type — Assets, Liabilities, Income, Expenses, and Equity — with subtotals for each group.
+
+## What to look for
+
+A balanced Trial Balance shows equal grand totals in the **Closing (Dr)** and **Closing (Cr)** columns.
+
+<CardGroup cols={2}>
+  <Card title="Balanced" icon="circle-check">
+    Closing debits equal closing credits. Your books are in order and you can proceed to generate the P&L and Balance Sheet with confidence.
+  </Card>
+  <Card title="Not balanced" icon="circle-exclamation">
+    Closing debits do not equal closing credits. There is a data entry error that must be resolved before relying on any other financial report.
+  </Card>
+</CardGroup>
+
+## What to do if it does not balance
+
+<Steps>
+  <Step title="Note the difference">
+    Record the exact difference between the total closing debits and closing credits.
+  </Step>
+  <Step title="Identify the affected account">
+    Look for accounts where the debit and credit columns appear inconsistent with the account type. For example, an expense account showing a net credit balance is unusual and worth investigating.
+  </Step>
+  <Step title="Open the General Ledger">
+    Navigate to **Reports > General Ledger** and filter by the suspect account. Review individual entries for missing offsets or incorrect amounts.
+  </Step>
+  <Step title="Correct the entry">
+    Post a correcting Journal Entry or fix the source document that caused the imbalance. Re-run the Trial Balance to confirm it now balances.
+  </Step>
+</Steps>
+
+<Warning>
+  Do not export or share your Profit and Loss or Balance Sheet until the Trial Balance is confirmed balanced. Both reports derive their figures from the same ledger data, so a discrepancy in the Trial Balance will propagate into those reports.
+</Warning>
+
+## Optional: hide group amounts
+
+Enable the **Hide Group Amounts** filter to show only leaf-level account rows without rolled-up subtotals. This is useful when you want a flat list of individual accounts for reconciliation purposes.
+
+## Export the report
+
+<Tabs>
+  <Tab title="CSV">
+    Click **Export** and select **CSV** to download the full trial balance including all account rows and period columns.
+  </Tab>
+  <Tab title="PDF">
+    Click **Export** and select **PDF** for a formatted version suitable for sharing with an accountant or auditor.
+  </Tab>
+</Tabs>

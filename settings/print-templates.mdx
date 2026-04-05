@@ -1,0 +1,100 @@
+---
+title: "Print Templates"
+description: "Customize how invoices and documents look when printed or exported as PDF"
+---
+
+Print templates control the layout, branding, and fields that appear on printed documents and PDF exports — including Sales Invoices, Purchase Invoices, and other transaction records.
+
+## What print settings control
+
+Go to **Settings > Print Settings** to configure the values that populate every template:
+
+| Field | Description |
+|---|---|
+| Logo | Company logo displayed in the document header |
+| Company Name | Name printed at the top of documents |
+| Email | Contact email shown on documents |
+| Phone | Contact phone number shown on documents |
+| Address | Company address block |
+| Color | Accent color used in template styling |
+| Font | Typeface applied across the document |
+| Display Logo | Toggle logo visibility on/off |
+| Display Time | Include the time alongside the document date |
+| Display Description | Show item description lines on invoices |
+| Terms and Conditions | Footer text for legal or payment terms |
+| Amount in Words | Spell out the total amount below the figures |
+| POS Print Width | Paper width (mm) for POS receipt printing |
+
+<Note>
+  **Terms and Conditions** only appears on the document when **Display Terms and Conditions** is toggled on.
+</Note>
+
+## Default templates vs. custom templates
+
+Frappe Books ships with a default template for each document type. The default template uses your Print Settings values automatically. You can create custom templates to override the layout, reorder fields, or apply distinct styling for different document types.
+
+## Accessing the Template Builder
+
+Navigate to **Settings > Print Templates** to see the list of all templates. Click any template name to open it in the Template Builder.
+
+<CardGroup cols={2}>
+  <Card title="Visual editor" icon="layout">
+    Use the Template Builder's visual interface to drag, resize, and configure sections without writing code.
+  </Card>
+  <Card title="HTML/CSS editor" icon="code">
+    Switch to the source editor for full control over markup and styles when the visual editor is not sufficient.
+  </Card>
+</CardGroup>
+
+## Create a custom template
+
+<Steps>
+  <Step title="Open Print Templates">
+    Go to **Settings > Print Templates** from the left sidebar.
+  </Step>
+  <Step title="Click New">
+    Click the **New** button in the top-right corner to start a blank template.
+  </Step>
+  <Step title="Choose a document type">
+    Select the document type this template applies to — for example, **Sales Invoice**, **Purchase Invoice**, or **Payment**.
+  </Step>
+  <Step title="Design in the Template Builder">
+    Use the Template Builder to arrange sections, add fields, and apply styling. Each section maps to a part of the printed document (header, item table, footer, etc.).
+  </Step>
+  <Step title="Save and set as default">
+    Click **Save**. To make this template the default for its document type, open the template and enable **Set as Default**.
+  </Step>
+</Steps>
+
+<Tip>
+  Duplicate an existing template to use it as a starting point. Open the template, click **More**, and select **Duplicate**. This preserves the original while giving you a copy to edit.
+</Tip>
+
+## Using template variables
+
+Templates support Jinja2 syntax for dynamic content. Variables are resolved from the document at print time.
+
+```jinja
+{{ doc.name }}          {# Document number, e.g. SINV-0001 #}
+{{ doc.customer }}      {# Customer name #}
+{{ doc.date }}          {# Invoice date #}
+{{ doc.grandTotal }}    {# Total amount #}
+```
+
+Use `for` loops to iterate over line items:
+
+```jinja
+{% for item in doc.items %}
+  {{ item.item }} — {{ item.qty }} × {{ item.rate }}
+{% endfor %}
+```
+
+## Assigning a template to a document type
+
+Each document type can have one active default template. To assign a template:
+
+1. Open the template from **Settings > Print Templates**.
+2. Confirm the **Document Type** field matches the target document.
+3. Enable **Set as Default** and save.
+
+When you print or export a document, Frappe Books automatically uses the default template for that document type.

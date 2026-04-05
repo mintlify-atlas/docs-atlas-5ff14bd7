@@ -1,0 +1,83 @@
+---
+title: "Development setup"
+description: "Set up a local development environment for Frappe Books"
+---
+
+Follow these steps to get Frappe Books running on your machine with hot reload.
+
+## Prerequisites
+
+You need **Node.js v20.18.1** and **yarn** before cloning the repo.
+
+<Steps>
+  <Step title="Install Node.js v20.18.1">
+    Use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to manage Node versions:
+
+    ```bash
+    nvm install 20.18.1
+    nvm use 20.18.1
+    ```
+  </Step>
+  <Step title="Install yarn">
+    ```bash
+    npm install -g yarn
+    ```
+  </Step>
+</Steps>
+
+## Clone and run
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/frappe/books.git
+    ```
+  </Step>
+  <Step title="Enter the project directory">
+    ```bash
+    cd books
+    ```
+  </Step>
+  <Step title="Install dependencies">
+    ```bash
+    yarn
+    ```
+
+    This also runs `electron-rebuild` via the `postinstall` hook to compile native modules for your Electron version.
+  </Step>
+  <Step title="Start the dev server">
+    ```bash
+    yarn dev
+    ```
+
+    Electron launches immediately, but the UI takes a few seconds to appear on first boot. Each file is served individually by the Vite dev server, so the initial load is slower than a production build.
+  </Step>
+</Steps>
+
+<Note>
+**First boot delay** — when you run `yarn dev`, the Electron window opens right away but the renderer UI renders a few seconds later. This is normal. Subsequent hot-reloads are fast.
+</Note>
+
+## Debugging the main process
+
+The dev build starts Electron with the `--inspect` flag, which opens a debugger on port **5858**.
+
+To attach Chrome DevTools:
+
+1. Open Chrome and navigate to `chrome://inspect`.
+2. Click **Configure** and add `localhost:5858` if it is not already listed.
+3. Click **inspect** under the target that appears.
+
+You can set breakpoints in the main process source files and step through IPC handlers just like any Node.js application.
+
+## Available scripts
+
+| Script                  | Command                       | Description                                           |
+| ----------------------- | ----------------------------- | ----------------------------------------------------- |
+| Development mode        | `yarn dev`                    | Starts Electron with Vite dev server and hot reload   |
+| Production build        | `yarn build`                  | Creates a platform installer for the current OS       |
+| Unit tests              | `yarn test`                   | Runs `scripts/test.sh` with `tape`                    |
+| UI tests                | `yarn uitest`                 | Runs Playwright end-to-end tests via `uitest/index.mjs` |
+| Lint                    | `yarn lint`                   | Runs ESLint on `.ts` and `.vue` files                 |
+| Format                  | `yarn format`                 | Runs Prettier on the whole project                    |
+| Generate translations   | `yarn script:translate`       | Generates translation CSV template                   |

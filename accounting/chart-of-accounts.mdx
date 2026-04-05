@@ -1,0 +1,147 @@
+---
+title: "Chart of Accounts"
+description: "Understand and manage the Chart of Accounts in Frappe Books — the foundation of double-entry bookkeeping."
+---
+
+The Chart of Accounts (CoA) is a structured list of every financial account in your company. Every transaction you record in Frappe Books — invoices, payments, journal entries — posts to one or more of these accounts. Getting your chart of accounts right gives you accurate financial reports and a clear picture of your business's financial health.
+
+Frappe Books uses **double-entry accounting**, which means every transaction debits at least one account and credits at least one other, and the total debits always equal the total credits.
+
+## Root types
+
+Every account in Frappe Books belongs to one of five root types. The root type determines which side of the accounting equation the account sits on.
+
+| Root Type | Normal Balance | Description |
+|-----------|---------------|-------------|
+| **Asset** | Debit | Resources owned by the company (cash, bank, receivables, fixed assets) |
+| **Liability** | Credit | Obligations owed to others (payables, loans) |
+| **Equity** | Credit | Owner's stake in the business (capital, retained earnings) |
+| **Income** | Credit | Revenue earned from operations |
+| **Expense** | Debit | Costs incurred to run the business |
+
+<Info>
+Asset and Expense accounts have a normal debit balance. Liability, Equity, and Income accounts have a normal credit balance.
+</Info>
+
+## Account types
+
+Each leaf account also carries an **Account Type** that tells Frappe Books how to use it in transactions. The available account types are:
+
+| Account Type | Typical Use |
+|---|---|
+| Bank | Bank accounts used in payments |
+| Cash | Petty cash and cash-in-hand accounts |
+| Receivable | Amounts owed to you by customers (Debtors) |
+| Payable | Amounts you owe to suppliers (Creditors) |
+| Income Account | Revenue from sales and services |
+| Expense Account | General operating expenses |
+| Cost of Goods Sold | Direct cost of items sold |
+| Fixed Asset | Long-term assets (equipment, buildings) |
+| Accumulated Depreciation | Contra-asset for depreciation |
+| Depreciation | Depreciation expense account |
+| Tax | Tax liability or asset accounts |
+| Stock | Inventory valuation accounts |
+| Stock Adjustment | Stock write-off and adjustment accounts |
+| Stock Received But Not Billed | Goods received before the supplier invoice arrives |
+| Equity | Owner's equity accounts |
+| Chargeable | Accounts that can be charged to a cost center |
+| Round Off | Rounding difference account |
+| Temporary | Temporary clearing accounts |
+| Expenses Included In Valuation | Landed costs included in inventory value |
+
+## Navigate to the Chart of Accounts
+
+Open the Chart of Accounts from the sidebar under **Accounting**.
+
+The view renders your accounts as an indented tree. Root-level nodes — **Application of Funds (Assets)**, **Expenses**, **Income**, **Source of Funds (Liabilities)**, and **Equity** — appear at the top level. Click any group account to expand or collapse its children. Leaf accounts (non-group) show their current balance on the right.
+
+Use the **Expand** and **Collapse** buttons in the top-right corner to expand or collapse the entire tree at once.
+
+## Pre-built Chart of Accounts templates
+
+During the setup wizard, Frappe Books asks you to choose a Chart of Accounts template. The following templates are available:
+
+- Standard Chart of Accounts
+- India - Chart of Accounts
+- Singapore - Chart of Accounts
+- France - Plan Comptable General
+- Netherlands - Grootboekschema
+- Hungary - Chart of Accounts
+- Indonesia - Chart of Accounts
+- Mexico - Plan de Cuentas
+- Guatemala - Cuentas
+- Nicaragua - Catalogo de Cuentas
+- U.A.E - Chart of Accounts
+- Canada - Plan comptable pour les provinces francophones
+
+If your country is not listed, the **Standard Chart of Accounts** gives you a general-purpose structure that works for most small businesses.
+
+<Note>
+The standard template creates accounts such as Debtors (Receivable), Creditors (Payable), Cash, Bank Accounts, and common income and expense accounts. You can rename, delete, or add to these after setup.
+</Note>
+
+## Add a new account
+
+You can add an account directly from the Chart of Accounts tree.
+
+<Steps>
+  <Step title="Hover over a group account">
+    In the tree, hover over any account that has **Is Group** enabled. Two inline buttons appear: **Add Account** and **Add Group**.
+  </Step>
+  <Step title="Click Add Account or Add Group">
+    Click **Add Account** to create a leaf account under this group. Click **Add Group** to create a sub-group that can contain further accounts.
+  </Step>
+  <Step title="Enter the account name">
+    Type the new account name in the inline input field that appears. Press **Enter** or click **Save**.
+  </Step>
+  <Step title="Set account details in the quick edit panel">
+    After saving the name, a quick-edit panel opens on the right. Set the remaining fields:
+
+    | Field | Description |
+    |---|---|
+    | **Account Name** | The display name of the account |
+    | **Root Type** | Automatically inherited from the parent; cannot be changed after saving |
+    | **Parent Account** | The group account this account sits under; cannot be changed after saving |
+    | **Account Type** | The functional type (Bank, Cash, Receivable, etc.); inherited from parent if not set |
+    | **Is Group** | Check this if the account is a folder that contains child accounts |
+
+  </Step>
+</Steps>
+
+<Warning>
+Root Type, Parent Account, and Is Group are locked once you save the account. Plan your account hierarchy before creating accounts.
+</Warning>
+
+## Edit an account
+
+Click any leaf account in the tree to open its quick-edit panel. You can update the **Account Name** and **Account Type**. Root Type and Parent Account cannot be changed after the account is first saved.
+
+## Delete an account
+
+Hover over an account in the tree and click **Delete Account** (or **Delete Group** for group accounts). Frappe Books only allows deletion if the account has no child accounts and no ledger entries posted against it.
+
+<Warning>
+You cannot delete an account that has transactions linked to it. You also cannot delete a group account that still contains child accounts.
+</Warning>
+
+## Default accounts
+
+Certain accounts are used automatically by Frappe Books when you create transactions:
+
+<AccordionGroup>
+  <Accordion title="Debtors (Receivable)">
+    Used as the default receivable account on Sales Invoices. Set via the customer's **Default Account** field.
+  </Accordion>
+  <Accordion title="Creditors (Payable)">
+    Used as the default payable account on Purchase Invoices. Set via the supplier's **Default Account** field.
+  </Accordion>
+  <Accordion title="Cash / Bank Accounts">
+    Selected when creating payments. Frappe Books filters payment accounts by Account Type (Cash or Bank) depending on the selected Payment Method.
+  </Accordion>
+  <Accordion title="Write-Off Account">
+    Configured in **Accounting Settings**. Used when a payment includes a write-off amount to clear small outstanding balances.
+  </Accordion>
+  <Accordion title="Discount Account">
+    Configured in **Accounting Settings**. Required when discounting is enabled on invoices.
+  </Accordion>
+</AccordionGroup>

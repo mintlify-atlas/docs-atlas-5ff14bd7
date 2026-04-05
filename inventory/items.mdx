@@ -1,0 +1,81 @@
+---
+title: "Items"
+description: "Manage products and services in Frappe Books"
+---
+
+Items represent the products and services you buy and sell. Every line on a sales invoice, purchase invoice, or stock movement references an item. Frappe Books uses items to pull in default rates, tax rules, and account mappings automatically.
+
+## Item types
+
+<Columns cols={2}>
+  <Card title="Product" icon="box">
+    A physical good you stock, ship, or receive. Enable **Track Item** to record stock movements and maintain inventory balances.
+  </Card>
+  <Card title="Service" icon="wrench">
+    A billable service with no physical stock. Frappe Books maps service items to a service income account by default.
+  </Card>
+</Columns>
+
+## Key fields
+
+| Field | Description |
+|---|---|
+| **Name** | Display name used on invoices and reports. |
+| **Item Code** | Unique identifier, useful when the display name differs from an internal SKU. |
+| **Description** | Longer description printed on invoice PDFs. |
+| **Unit of Measure (UOM)** | The unit used when entering quantities (e.g., Nos, Kg, Hr). |
+| **Rate** | Default selling or buying rate. |
+| **Item Type** | `Product` or `Service`. |
+| **Item Group** | Category used to organize items and inherit settings. |
+| **Tax** | Default tax template applied automatically on invoices. |
+| **Income Account** | Revenue account credited when you sell this item. |
+| **Expense Account** | Cost account debited when you purchase or issue this item. |
+| **Track Item** | Enable to record stock movements and track inventory levels. |
+| **Has Batch** | Enable batch tracking for this item. |
+| **Has Serial Number** | Enable serial number tracking for this item. |
+
+<Tip>
+  Set a default **Tax** on each item so Frappe Books applies the correct tax automatically every time the item appears on an invoice—no manual selection needed.
+</Tip>
+
+## Create an item
+
+<Steps>
+  <Step title="Open the Items list">
+    Go to **Inventory → Items** (or **Accounting → Items** if inventory is disabled). Click **New**.
+  </Step>
+  <Step title="Enter the item details">
+    Fill in the **Name**, **Item Type**, **UOM**, and **Rate**. Add a **Description** if you want it printed on documents.
+  </Step>
+  <Step title="Set accounting defaults">
+    Verify the **Income Account** and **Expense Account** populated by the formula. Adjust them if your chart of accounts uses different account names.
+  </Step>
+  <Step title="Assign a tax">
+    Select a **Tax** template to auto-apply on invoices. If none exists yet, create one under **Setup → Taxes**.
+  </Step>
+  <Step title="Enable tracking (products only)">
+    For physical goods, turn on **Track Item**. Optionally enable **Has Batch** or **Has Serial Number** for lot or unit-level traceability.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The item is now available to use on invoices and stock documents.
+  </Step>
+</Steps>
+
+## Item groups
+
+Item groups let you organize items into categories (for example, *Electronics*, *Raw Materials*, *Consulting*). When an item belongs to a group, it can inherit the group's HSN Code automatically.
+
+<Note>
+  Create item groups under **Setup → Item Groups** before creating items, so you can assign a group during item setup.
+</Note>
+
+## Batch and serial number tracking
+
+For items that require lot or serial tracking, enable the corresponding option on the item form:
+
+- **Has Batch** — enables batch selection on stock transactions. Set a **Batch Series** prefix to auto-generate batch names.
+- **Has Serial Number** — enables serial number tracking. Set a **Serial Number Series** prefix for auto-generated serial numbers.
+
+<Warning>
+  Batch and serial number settings cannot be changed after the item is first saved. Plan your tracking strategy before creating items at scale.
+</Warning>

@@ -1,0 +1,127 @@
+---
+title: "Stock Management"
+description: "Track inventory with stock movements, shipments, and purchase receipts"
+---
+
+Frappe Books tracks the quantity and value of physical goods across one or more storage locations. Every movement—receiving goods from a supplier, shipping to a customer, or transferring between warehouses—creates a **Stock Ledger Entry** that updates your inventory balances in real time.
+
+<Note>
+  Enable inventory tracking before using these features. Go to **Settings → Inventory Settings** and turn on **Enable Inventory**.
+</Note>
+
+## Locations
+
+A **Location** is a named storage place—a warehouse, store room, shelf, or counter. Stock quantities are tracked per location so you always know where each item is held.
+
+To create a location, go to **Inventory → Locations** and click **New**. Enter a unique name and optionally link an address. Set your most-used location as the **Default Location** in Inventory Settings.
+
+<Tip>
+  Create separate locations for each physical space you track independently—for example, a main warehouse, a retail store floor, and a returns area.
+</Tip>
+
+## Stock movements
+
+A **Stock Movement** records an internal inventory adjustment without a corresponding supplier or customer transaction. Use it for opening stock entries, internal consumption, manufacturing, or warehouse transfers.
+
+Stock movements are submittable. Submitting one generates Stock Ledger Entries that update your inventory balances.
+
+### Movement types
+
+<Columns cols={2}>
+  <Card title="Material Receipt" icon="arrow-down-to-line">
+    Records goods received into a location without a supplier invoice—for example, opening stock or manufacturing output. Requires a **To** location on each item row.
+  </Card>
+  <Card title="Material Issue" icon="arrow-up-from-line">
+    Records goods removed from a location without a customer invoice—for example, materials consumed in production or written off as damaged. Requires a **From** location on each item row.
+  </Card>
+  <Card title="Material Transfer" icon="arrows-left-right">
+    Moves stock from one location to another within your business. Requires both a **From** and a **To** location on each item row.
+  </Card>
+  <Card title="Manufacture" icon="gear">
+    Records a manufacturing operation that consumes raw materials (From location) and produces finished goods (To location).
+  </Card>
+</Columns>
+
+### Create a stock movement
+
+<Steps>
+  <Step title="Open Stock Movements">
+    Go to **Inventory → Stock Movements** and click **New**.
+  </Step>
+  <Step title="Select a movement type">
+    Choose the **Movement Type** that describes what you are recording. The available **From** and **To** fields on each item row update accordingly.
+  </Step>
+  <Step title="Add item rows">
+    Click **Add Row** in the Items table. Select the item, enter the quantity and rate, and set the From and/or To locations.
+  </Step>
+  <Step title="Submit">
+    Click **Submit**. Frappe Books validates the movement and creates the corresponding Stock Ledger Entries.
+  </Step>
+</Steps>
+
+## Purchase receipt
+
+A **Purchase Receipt** records the physical arrival of goods from a supplier. It is separate from the Purchase Invoice—goods arrive via a receipt, while the invoice records the financial obligation to pay. Link the two using the **Back Reference** field.
+
+Submitting a Purchase Receipt increases stock levels at the target location for each item row.
+
+<Tabs>
+  <Tab title="Key fields">
+
+| Field | Description |
+|---|---|
+| **Party** | The supplier from whom goods are being received. Required. |
+| **Date** | The date goods were physically received. |
+| **Back Reference** | Links to the corresponding Purchase Invoice. |
+| **Return Against** | Links to the original Purchase Receipt (for returns only). |
+
+  </Tab>
+  <Tab title="Steps">
+
+<Steps>
+  <Step title="Create the Purchase Receipt">
+    Go to **Inventory → Purchase Receipts** and click **New**. Select the supplier in the **Party** field.
+  </Step>
+  <Step title="Link the invoice">
+    Set the **Back Reference** to the corresponding Purchase Invoice.
+  </Step>
+  <Step title="Add items">
+    Add the items received with their quantities, locations, and rates.
+  </Step>
+  <Step title="Submit">
+    Click **Submit**. Stock levels at the target location increase by the quantities entered.
+  </Step>
+</Steps>
+
+  </Tab>
+</Tabs>
+
+## Shipment
+
+A **Shipment** records goods dispatched to a customer. Like Purchase Receipts, Shipments are separate from Sales Invoices and link via the **Back Reference** field.
+
+Submitting a Shipment decreases stock levels at the source location for each item row.
+
+| Field | Description |
+|---|---|
+| **Party** | The customer to whom goods are being shipped. Required. |
+| **Date** | The dispatch date. |
+| **Back Reference** | Links to the corresponding Sales Invoice. |
+| **Return Against** | Links to the original Shipment (for returns only). |
+
+<Note>
+  When you complete a POS sale for inventory items, Frappe Books automatically creates and submits a Shipment from the configured POS warehouse. You do not need to create one manually in that case.
+</Note>
+
+## Batch and serial number tracking
+
+For items that require lot or unit-level traceability, Frappe Books supports two tracking modes:
+
+- **Batch tracking** — group multiple units into a named batch (e.g., a production lot or expiry date group). Enable **Has Batch** on the item and turn on **Enable Batches** in Inventory Settings.
+- **Serial number tracking** — assign a unique identifier to every individual unit. Enable **Has Serial Number** on the item and turn on **Enable Serial Number** in Inventory Settings.
+
+Every stock transaction for a tracked item must specify the batch or serial number. Serial number statuses update automatically: `Inactive` when not yet received, `Active` when in stock, and `Delivered` when shipped.
+
+<Warning>
+  Batch and serial number settings on an item are permanent once saved. Plan your tracking requirements before creating items at scale.
+</Warning>

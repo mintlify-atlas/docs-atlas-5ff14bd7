@@ -1,0 +1,75 @@
+---
+title: "Architecture"
+description: "How Frappe Books is structured as an Electron application"
+---
+
+Frappe Books is a desktop application built on Electron, combining a Vue.js frontend with a SQLite backend. Understanding how these two sides communicate is key to working on the codebase.
+
+## Two execution entry points
+
+Electron splits every application into two distinct processes. Frappe Books maps onto this model directly.
+
+<CardGroup cols={2}>
+  <Card title="Main process" icon="server">
+    The **server** side. Entry point: `main.ts`. Has full access to Node.js APIs, the filesystem, and the SQLite database via `better-sqlite3` and Knex.
+  </Card>
+  <Card title="Renderer process" icon="monitor">
+    The **client** side. Entry point: `src/main.js`. Runs the Vue.js UI in a Chromium window. Cannot access Node.js APIs directly.
+  </Card>
+</CardGroup>
+
+## Client-server communication
+
+The renderer process communicates with the main process exclusively over Electron's IPC (inter-process communication) layer using `ipcRenderer.send` and `ipcRenderer.invoke`.
+
+<Note>
+All IPC calls are funnelled through `fyo/demux/`. These are the **only** files on the client side that know whether they are running inside Electron or a plain browser. All platform-specific calls must go through the demux layer — never bypass it.
+</Note>
+
+This design keeps the rest of the client code platform-agnostic, which makes it testable in a plain Node.js environment without spinning up Electron.
+
+## Folder reference
+
+| Folder         | Side        | Description                                                                 |
+| -------------- | ----------- | --------------------------------------------------------------------------- |
+| `main`         | Server      | Electron main process code called from `main.ts`                            |
+| `schemas`      | Server      | Database schema definitions (JSON) and the code that combines them          |
+| `backend`      | Server      | Database management and CRUD operations                                     |
+| `scripts`      | Server      | One-off scripts (e.g. generating translation templates); not used at runtime |
+| `build`        | Server      | Build configuration files; only used when building the project              |
+| `translations` | Server      | CSV files containing translated strings, one file per language              |
+| `src`          | Client      | View layer — all `.vue` components live here                                |
+| `reports`      | Client\*    | Business logic and view config for financial reports                        |
+| `models`       | Client\*    | `Doc` subclasses that manage data and business logic on the client side     |
+| `fyo`          | Client\*    | The underlying framework that manages the client-side model lifecycle       |
+| `utils`        | Agnostic    | Shared utilities callable from either side                                  |
+| `dummy`        | Agnostic    | Generates dummy data for testing and demo purposes                          |
+
+<Note>
+Folders marked **Client\*** run in the renderer process at runtime, but because they contain business logic they are tested server-side using `tape` in a plain Node.js environment. Code in these folders must not import Vue or any other browser-only API at the top level. Use dynamic imports (`await import('...')`) for any code path that should only run in the browser.
+</Note>
+
+## Special file types
+
+Two file naming conventions signal specific roles:
+
+<AccordionGroup>
+  <Accordion title="**/types.ts">
+    Contains all TypeScript type definitions for the surrounding folder. These files are side-agnostic and should only import from other `types.ts` files. Read them first when exploring an unfamiliar part of the codebase.
+  </Accordion>
+  <Accordion title="**/tests/*.spec.ts">
+    Test files co-located with the code they cover. All tests run server-side with `tape`. No code from these files is imported at runtime.
+  </Accordion>
+</AccordionGroup>
+
+## Key technologies
+
+| Technology      | Role                                                          |
+| --------------- | ------------------------------------------------------------- |
+| Electron 22     | Desktop shell; provides the main/renderer split and IPC       |
+| Vue.js 3        | Reactive UI framework for the renderer process                |
+| SQLite          | Local database; accessed via `better-sqlite3`                 |
+| Knex            | SQL query builder used in the `backend` layer                 |
+| Vite            | Dev server and bundler for the renderer process               |
+| TypeScript      | Used throughout; `tsconfig.json` at the project root          |
+| Tailwind CSS    | Utility-first CSS framework for styling Vue components        |

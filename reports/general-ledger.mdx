@@ -1,0 +1,70 @@
+---
+title: "General Ledger"
+description: "View all financial transactions in chronological order"
+---
+
+The General Ledger is the master record of every debit and credit entry posted in your books. It gives you a complete, chronological view of all accounting activity across every account — making it your primary tool for auditing and tracing transactions.
+
+## Navigate to the report
+
+<Steps>
+  <Step title="Open Reports">
+    In the sidebar, click **Reports**.
+  </Step>
+  <Step title="Select General Ledger">
+    Under the Accounting section, click **General Ledger**.
+  </Step>
+  <Step title="Apply filters and run">
+    Set your date range and any other filters, then click **Run**.
+  </Step>
+</Steps>
+
+## Filter options
+
+Use the filter panel at the top of the report to narrow down the entries you see.
+
+| Filter | Description |
+|---|---|
+| **From Date / To Date** | Restrict entries to a specific date range. Defaults to the past year. |
+| **Account** | Show entries for a single account only. |
+| **Party** | Filter by a specific customer or supplier. |
+| **Ref Type** | Limit to a voucher type: Sales Invoices, Purchase Invoices, Payments, or Journal Entries. |
+| **Ref Name** | Filter by a specific voucher name (e.g., `SINV-0001`). |
+| **Group By** | Group rows by Party, Account, or Reference instead of showing a flat list. |
+| **Ascending Order** | Sort entries oldest-first instead of newest-first. |
+| **Include Cancelled** | Show reverted (cancelled) entries alongside active ones. |
+
+## Report columns
+
+| Column | Description |
+|---|---|
+| **#** | Row index for quick reference. |
+| **Account** | The chart-of-accounts entry affected by the transaction. |
+| **Date** | The posting date of the transaction. |
+| **Debit** | Amount debited to the account. |
+| **Credit** | Amount credited to the account. |
+| **Balance** | Running balance after each entry (debit minus credit). |
+| **Party** | Customer or supplier linked to the transaction. |
+| **Ref Name** | The voucher number (e.g., invoice or payment ID). |
+| **Ref Type** | The document type that created the entry. |
+
+A **Closing** summary row at the bottom shows the total debits, credits, and net balance for the filtered view.
+
+## Export the report
+
+<Tabs>
+  <Tab title="CSV">
+    Click the **Export** button in the toolbar and select **CSV**. The file downloads immediately and can be opened in any spreadsheet application.
+  </Tab>
+  <Tab title="PDF">
+    Click **Export** and select **PDF** to generate a print-ready version of the report with your applied filters.
+  </Tab>
+</Tabs>
+
+<Tip>
+  To audit a specific account — for example, to trace every transaction that hit your Cash account — set the **Account** filter to that account and leave the date range wide open. The running **Balance** column lets you verify the account balance at any point in time.
+</Tip>
+
+<Note>
+  The General Ledger excludes reverted (cancelled) entries by default. Enable **Include Cancelled** if you need to see the full audit trail including reversals.
+</Note>

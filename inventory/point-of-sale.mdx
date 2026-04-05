@@ -1,0 +1,124 @@
+---
+title: "Point of Sale"
+description: "Run retail transactions with the Frappe Books POS interface"
+---
+
+The Point of Sale (POS) module lets you process retail transactions directly from Frappe Books. Each sale creates a Sales Invoice and, for inventory-tracked items, automatically submits a Shipment from the configured warehouse—no manual stock entry required.
+
+<Note>
+  Enable POS before using it. Go to **Settings → Inventory Settings** and turn on **Enable Point of Sale**.
+</Note>
+
+## Set up a POS profile
+
+A **POS Profile** controls the behavior of a POS session: which warehouse stock is pulled from, which price list governs rates, and how payments are handled.
+
+| Field | Description |
+|---|---|
+| **POS Profile Name** | Unique name for this profile. |
+| **Default Location** | The warehouse or location stock is deducted from when items are sold. |
+| **POS UI** | Layout mode: `Classic` or `Modern`. |
+| **Default Customer** | Pre-filled customer on every new invoice in this session. |
+| **Price List** | The price list used to look up item rates. |
+| **Can Change Rate** | Allow cashiers to override the item rate on a sale. |
+| **Can Edit Discount** | Allow cashiers to apply a discount on line items. |
+| **Hide Unavailable Items** | Hide items with zero stock from the item grid. |
+| **Ignore Pricing Rule** | Skip automatic pricing rules for this profile. |
+
+To create a POS profile, go to **POS → POS Profiles** and click **New**. Fill in the fields above and save.
+
+## Open a POS shift
+
+<Steps>
+  <Step title="Go to Point of Sale">
+    Navigate to **POS → Point of Sale**.
+  </Step>
+  <Step title="Select a profile">
+    Choose the POS Profile you want to use for this shift.
+  </Step>
+  <Step title="Enter opening cash">
+    Enter the cash amount in the till at the start of the shift. This is recorded for the cash-up at the end.
+  </Step>
+  <Step title="Open the shift">
+    Click **Open Shift**. The POS interface loads and you can begin processing sales.
+  </Step>
+</Steps>
+
+## Layout modes
+
+Frappe Books provides two POS layouts. Select the one that matches your hardware and workflow using the **POS UI** field on the POS Profile.
+
+<Tabs>
+  <Tab title="Classic POS">
+    A two-panel layout with an item grid on the left and the current invoice on the right. Suited for setups with a larger screen or desktop workstation where you want to see the full item catalog at a glance.
+  </Tab>
+  <Tab title="Modern POS">
+    A streamlined, single-focus layout optimized for touch screens and smaller displays. Item search is prominent, and the invoice panel slides in when needed.
+  </Tab>
+</Tabs>
+
+## Make a sale
+
+<Steps>
+  <Step title="Search for items">
+    Type the item name or code in the search bar, or browse the item group grid. Click an item to add it to the current invoice.
+  </Step>
+  <Step title="Set the quantity">
+    Click the quantity field on the invoice row and enter the amount sold.
+  </Step>
+  <Step title="Apply a discount (optional)">
+    If the profile allows discounts, enter a percentage or amount in the discount field on the row or at the invoice level.
+  </Step>
+  <Step title="Select the payment method">
+    Click **Pay**. Choose the payment method (cash, bank transfer, etc.) and enter the amount tendered. For split payments, add multiple payment rows.
+  </Step>
+  <Step title="Complete the sale">
+    Click **Complete**. Frappe Books submits the Sales Invoice and, for inventory items, automatically creates and submits a Shipment from the configured warehouse.
+  </Step>
+</Steps>
+
+## Hold an invoice
+
+If a customer needs to pause and return later, you can save the current invoice without completing the payment:
+
+1. Click **Save Invoice** (or the hold button) to park the current invoice.
+2. Start a new sale for another customer.
+3. To resume, click **Saved Invoices** and select the held invoice.
+
+<Tip>
+  Use the hold feature at a shared terminal when multiple customers need to be served simultaneously.
+</Tip>
+
+## Close a shift
+
+<Steps>
+  <Step title="Click Close POS Shift">
+    Click the **Close POS Shift** button in the top-right corner of the POS screen.
+  </Step>
+  <Step title="Review the cash summary">
+    Frappe Books shows the expected closing cash (opening amount plus cash sales) alongside a field to enter the actual counted amount. Note any discrepancy.
+  </Step>
+  <Step title="Submit the closing entry">
+    Click **Close Shift**. The shift record is saved with the opening amount, total sales, and closing cash count.
+  </Step>
+</Steps>
+
+## Return a sale
+
+To process a refund or return for a previously completed POS sale:
+
+<Steps>
+  <Step title="Open the return flow">
+    In the POS, click **Return Invoice** and search for the original Sales Invoice.
+  </Step>
+  <Step title="Select items to return">
+    Choose the items and quantities being returned. Frappe Books creates a return invoice with negative quantities.
+  </Step>
+  <Step title="Process the refund">
+    Select the refund payment method and complete the return. The inventory is automatically restocked and a return Shipment is recorded.
+  </Step>
+</Steps>
+
+<Warning>
+  A return can only be processed against an invoice created in a completed (closed) POS session. You cannot return items from an invoice in the currently open shift.
+</Warning>

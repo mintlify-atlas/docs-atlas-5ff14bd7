@@ -1,0 +1,78 @@
+---
+title: Introduction
+description: Frappe Books is a free, open-source desktop accounting application for small and medium businesses. It runs fully offline on Windows, macOS, and Linux.
+keywords: ['frappe books', 'open-source accounting', 'double-entry', 'desktop accounting', 'offline accounting']
+---
+
+Frappe Books is a modern accounting application designed to make financial management straightforward for small and medium-sized businesses. It runs entirely on your desktop — no cloud account, no subscription, and no internet connection required for day-to-day use.
+
+## What is Frappe Books?
+
+Frappe Books gives you a complete set of accounting tools packaged as a native desktop application. All your financial data is stored in a local SQLite file on your machine. You own your data.
+
+The application covers the full accounting workflow: recording transactions, managing invoices and bills, tracking payments, running a Point of Sale, and generating standard financial reports.
+
+<Note>
+  Frappe Books is free and open-source software, licensed under the [AGPL-3.0](https://github.com/frappe/books/blob/master/LICENSE). The source code is available at [github.com/frappe/books](https://github.com/frappe/books).
+</Note>
+
+## Key features
+
+<Columns cols={2}>
+  <Card title="Double-entry accounting" icon="scale-balanced">
+    Every transaction is recorded across two accounts, keeping your books balanced and auditable at all times.
+  </Card>
+  <Card title="Invoicing and billing" icon="file-invoice">
+    Create professional sales invoices, purchase bills, and sales quotes. Track payment status on each document.
+  </Card>
+  <Card title="Payments" icon="credit-card">
+    Record incoming and outgoing payments and link them to specific invoices or bills. Supports partial payments.
+  </Card>
+  <Card title="Journal entries" icon="book">
+    Post manual adjustments, opening balances, and corrections directly to the general ledger.
+  </Card>
+  <Card title="Point of Sale" icon="cash-register">
+    Process retail transactions with an integrated POS interface, including support for barcodes, serial numbers, and batches.
+  </Card>
+  <Card title="Inventory management" icon="boxes-stacked">
+    Track stock movements, record shipments and purchase receipts, and manage item groups with optional batch and serial number tracking.
+  </Card>
+  <Card title="Financial reports" icon="chart-line">
+    Generate a General Ledger, Profit and Loss Statement, Balance Sheet, and Trial Balance at any time.
+  </Card>
+  <Card title="Works offline" icon="wifi-slash">
+    Every feature works without an internet connection. Your data never leaves your machine unless you choose to export it.
+  </Card>
+</Columns>
+
+## Who it's for
+
+Frappe Books is built for small and medium-sized businesses that need reliable accounting without the cost or complexity of enterprise software. It's a good fit if you:
+
+- Run a retail shop, services business, or small trading operation
+- Need double-entry accounting but don't want a cloud-hosted subscription
+- Want to own your financial data locally
+- Are looking for an open-source alternative to commercial accounting packages
+
+## Architecture
+
+Frappe Books is built on three open-source technologies:
+
+| Layer | Technology | Role |
+|-------|-----------|------|
+| Desktop shell | [Electron](https://www.electronjs.org/) | Packages the application for Windows, macOS, and Linux; handles file system access and native OS integration |
+| User interface | [Vue.js](https://vuejs.org/) | Powers the reactive, component-based front end |
+| Database | [SQLite](https://www.sqlite.org/) | Stores all financial data, transactions, and configuration in a single file on your machine |
+
+The Electron main process manages the SQLite database and file system operations. The Vue.js renderer process handles the UI. Communication between them goes through Electron's IPC channels.
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Download and install Frappe Books on Windows, macOS, or Linux.
+  </Card>
+  <Card title="Setup Wizard" icon="wand-magic-sparkles" href="/setup-wizard">
+    Configure your company, fiscal year, and chart of accounts on first launch.
+  </Card>
+</Columns>

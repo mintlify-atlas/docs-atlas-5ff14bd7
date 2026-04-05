@@ -1,0 +1,204 @@
+---
+title: "Invoicing"
+description: "Create, submit, and manage Sales Invoices and Purchase Invoices in Frappe Books."
+---
+
+Frappe Books has two types of invoices:
+
+- **Sales Invoice** — issued to a customer when you sell goods or services. Uses number series `SINV-` by default.
+- **Purchase Invoice** — received from a supplier when you buy goods or services. Uses number series `PINV-` by default.
+
+Both invoice types are submittable documents. Posting an invoice creates ledger entries, updates the outstanding amount on the party, and makes the invoice available for payment reconciliation.
+
+## Invoice statuses
+
+| Status | Meaning |
+|---|---|
+| **Draft** | Invoice is saved but not posted to the ledger. You can edit all fields. |
+| **Submitted** | Invoice is posted. Ledger entries have been created. Outstanding amount is tracked. |
+| **Paid** | The outstanding amount has been fully cleared by one or more payments. |
+| **Cancelled** | The invoice has been reversed. All linked payments are also cancelled. |
+
+## Create a Sales Invoice
+
+<Steps>
+  <Step title="Open Sales Invoice">
+    Go to **Sales** in the sidebar and click **Sales Invoice**, then click **New**.
+  </Step>
+  <Step title="Select a customer">
+    In the **Customer** field, type to search and select the customer. The customer must have **Role** set to `Customer` or `Both` in their Party record.
+
+    When you select a customer, Frappe Books automatically sets:
+    - The **Account** field to the customer's default receivable account (typically **Debtors**).
+    - The **Currency** to the customer's configured currency.
+  </Step>
+  <Step title="Set the invoice date">
+    The **Date** field defaults to today. Change it if you need to back-date or forward-date the invoice.
+  </Step>
+  <Step title="Add line items">
+    In the **Items** table, add one row per product or service:
+
+    | Field | Description |
+    |---|---|
+    | **Item** | Link to an Item record. Populates description, rate, and account automatically. |
+    | **Description** | Free-text description of the item or service. |
+    | **Qty** | Quantity (computed from Transfer Quantity and Conversion Factor). |
+    | **Rate** | Unit price of the item. |
+    | **Tax** | Link to a Tax Template. The template's rates are applied to calculate the tax amount. |
+    | **Amount** | Calculated as `Rate × Qty`. Read-only. |
+    | **Account** | The income account to post this line to (e.g. Sales, Service Revenue). |
+
+    <Tip>
+    Click the expand icon on any line item row to open the quick-edit panel, where you can also set **Discount Amount**, **Discount Percent**, batch details, and HSN/SAC code.
+    </Tip>
+  </Step>
+  <Step title="Review totals">
+    Below the items table, Frappe Books shows:
+
+    - **Net Total** — sum of all line item amounts before tax.
+    - **Taxes** — tax summary table with account name, rate, and amount for each tax component.
+    - **Grand Total** — Net Total plus taxes, minus any invoice-level discount.
+    - **Base Grand Total** — Grand Total converted to the company's base currency (shown only when the invoice currency differs from the company currency).
+    - **Outstanding Amount** — amount remaining unpaid.
+  </Step>
+  <Step title="Apply a discount (optional)">
+    Invoice-level discounts are available when discounting is enabled in **Accounting Settings**. You can apply:
+
+    - **Discount Percent** — reduces the grand total by a percentage.
+    - **Discount Amount** — reduces the grand total by a fixed amount.
+    - **Apply Discount After Tax** — when checked, the discount is applied to the taxed total rather than the pre-tax total.
+  </Step>
+  <Step title="Set optional references">
+    In the **References** section you can add:
+
+    | Field | Description |
+    |---|---|
+    | **Notes** | Free-text terms, payment instructions, or notes for the customer. |
+    | **Attachment** | Attach a contract, purchase order, or other supporting document. |
+    | **Quote Reference** | Link this invoice back to the originating Sales Quote. |
+    | **Return Against** | Set when this invoice is a credit note returning a previous invoice. |
+
+  </Step>
+  <Step title="Configure submission settings (optional)">
+    In the **Settings** tab:
+
+    | Field | Description |
+    |---|---|
+    | **Make Payment On Submit** | When checked, Frappe Books automatically creates and submits a payment for the full outstanding amount when you submit the invoice. Requires a default payment account to be set in Defaults. |
+    | **Make Shipment On Submit** | When checked (and inventory is enabled), Frappe Books automatically creates a Shipment document on submission. |
+    | **Apply Discount After Tax** | Moves discount calculation to after-tax totals. |
+
+  </Step>
+  <Step title="Submit the invoice">
+    Click **Submit**. Frappe Books:
+    - Posts ledger entries (debits Debtors, credits the income account for each line, credits tax accounts).
+    - Sets the **Outstanding Amount** to the Grand Total.
+    - Updates the customer's outstanding balance.
+  </Step>
+</Steps>
+
+## Create a Purchase Invoice
+
+The flow for Purchase Invoices mirrors Sales Invoices with these differences:
+
+<Tabs>
+  <Tab title="Sales Invoice">
+    - Party field label: **Customer**
+    - Party role filter: `Customer` or `Both`
+    - Account: Receivable account (Debtors)
+    - Number series: `SINV-`
+    - Items table target: `SalesInvoiceItem`
+    - On submit: debits Debtors, credits income accounts
+    - Linked transfer: Shipment
+  </Tab>
+  <Tab title="Purchase Invoice">
+    - Party field label: **Supplier**
+    - Party role filter: `Supplier` or `Both`
+    - Account: Payable account (Creditors)
+    - Number series: `PINV-`
+    - Items table target: `PurchaseInvoiceItem`
+    - On submit: debits expense/stock accounts, credits Creditors
+    - Linked transfer: Purchase Receipt
+  </Tab>
+</Tabs>
+
+<Steps>
+  <Step title="Open Purchase Invoice">
+    Go to **Purchases** in the sidebar and click **Purchase Invoice**, then click **New**.
+  </Step>
+  <Step title="Select the supplier">
+    Choose the supplier from the **Supplier** field. The payable account (Creditors) is set automatically from the supplier's default account.
+  </Step>
+  <Step title="Enter the invoice date">
+    Use the date from the supplier's invoice. The **Date** field defaults to today.
+  </Step>
+  <Step title="Add line items">
+    Add items in the same way as a Sales Invoice. The **Account** column should point to an expense or stock account (e.g. Purchases, Cost of Goods Sold).
+  </Step>
+  <Step title="Submit">
+    Click **Submit** to post the invoice. Frappe Books debits your expense accounts and credits Creditors.
+  </Step>
+</Steps>
+
+## Invoice field reference
+
+| Field | Type | Description |
+|---|---|---|
+| `name` | Data | Invoice number (read-only, auto-generated from number series) |
+| `numberSeries` | Link | Number series used to generate the invoice number |
+| `party` | Link | Customer (Sales) or Supplier (Purchase) |
+| `account` | Link | Receivable or Payable account for the party |
+| `date` | Datetime | Invoice posting date |
+| `priceList` | Link | Price list to source item rates from (optional) |
+| `items` | Table | Line items |
+| `netTotal` | Currency | Total before tax (computed) |
+| `taxes` | Table | Tax summary (computed) |
+| `grandTotal` | Currency | Total after tax and discount (computed) |
+| `baseGrandTotal` | Currency | Grand total in company currency (shown for multi-currency) |
+| `outstandingAmount` | Currency | Unpaid amount remaining (computed) |
+| `discountPercent` | Float | Invoice-level discount percentage |
+| `discountAmount` | Currency | Invoice-level discount amount |
+| `discountAfterTax` | Check | Apply discount after tax calculation |
+| `makeAutoPayment` | Check | Create payment automatically on submit |
+| `terms` | Text | Notes / payment terms |
+| `attachment` | Attachment | Supporting document |
+| `returnAgainst` | Link | Original invoice this return is linked to |
+
+## Record a return or credit note
+
+To issue a credit note (Sales) or debit note (Purchase), open the original submitted invoice and use the **Return** action from the actions menu. Frappe Books:
+
+1. Creates a new invoice of the same type with negative quantities.
+2. Sets **Return Against** to the original invoice number.
+3. Calculates the return amounts based on quantities not yet returned.
+
+Submit the return invoice to post the reversing ledger entries and reduce the original invoice's outstanding amount.
+
+<Note>
+You cannot cancel a submitted invoice that has linked return invoices. Cancel or delete the return invoices first.
+</Note>
+
+## Link a payment to an invoice
+
+You can link payments to invoices in two ways:
+
+1. **From the invoice**: After submission, click the **Make Payment** button (or use the action menu) to open a new payment pre-filled with the invoice details and outstanding amount.
+2. **From the payment form**: In the **Payment Reference** (`for`) table on the Payment form, add a row linking to the invoice by type and name.
+
+Each linked payment reduces the invoice's **Outstanding Amount**. When the outstanding amount reaches zero, the invoice status changes to **Paid**.
+
+## Print an invoice
+
+Frappe Books generates a printable view of submitted invoices. To print:
+
+<Steps>
+  <Step title="Open the submitted invoice">
+    Navigate to the invoice you want to print.
+  </Step>
+  <Step title="Click the print icon">
+    Use the print action from the top-right actions area of the form.
+  </Step>
+  <Step title="Choose a print template">
+    Frappe Books uses **Print Templates** defined under **Setup > Print Settings**. Select the template and export to PDF.
+  </Step>
+</Steps>

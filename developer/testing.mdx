@@ -1,0 +1,74 @@
+---
+title: "Testing"
+description: "Running and writing tests for Frappe Books"
+---
+
+Frappe Books has two test suites: unit/integration tests that run server-side with `tape`, and end-to-end UI tests driven by Playwright.
+
+## Unit and integration tests
+
+```bash
+yarn test
+```
+
+This runs `scripts/test.sh`, which discovers and executes every `*.spec.ts` file using `tape` in a plain Node.js environment.
+
+<Note>
+Tests run on the **server side** (Node.js), even for code that executes in the renderer at runtime. This is intentional: the `models`, `fyo`, and `reports` folders contain pure business logic that has no dependency on the DOM or Vue at the top level, making them testable without launching Electron.
+</Note>
+
+## UI tests
+
+```bash
+yarn uitest
+```
+
+This runs `uitest/index.mjs` and pipes the output through `tap-spec` for readable formatting. UI tests launch the full Electron application using [Playwright](https://playwright.dev) and simulate real user interactions.
+
+## Where test files live
+
+Test files follow the pattern `**/tests/*.spec.ts` and are co-located with the code they cover. For example, schema tests live under `schemas/tests/` and `fyo` tests live under `fyo/tests/`.
+
+```
+books/
+├── fyo/
+│   └── tests/
+│       └── *.spec.ts
+├── schemas/
+│   └── tests/
+│       └── *.spec.ts
+└── tests/
+    ├── testSetupInstance.spec.ts
+    ├── testImporter.spec.ts
+    └── helpers.ts
+```
+
+The top-level `tests/` folder contains integration tests that exercise the full setup lifecycle, including importing transactions from CSV fixtures (`items.csv`, `parties.csv`, `sales_invoices.csv`).
+
+## Writing tests
+
+<Steps>
+  <Step title="Create a spec file">
+    Add a `*.spec.ts` file inside a `tests/` folder next to the code you want to test.
+  </Step>
+  <Step title="Import tape">
+    ```typescript
+    import tape from 'tape';
+
+    tape('my test description', async (t) => {
+      t.equal(1 + 1, 2, 'basic arithmetic works');
+      t.end();
+    });
+    ```
+  </Step>
+  <Step title="Avoid browser-only imports">
+    Do not import Vue components or other renderer-only code at the top level of model files. Use dynamic imports (`await import('...')`) for any code path that only runs in the browser. Importing browser code will break the test runner.
+  </Step>
+  <Step title="Use DatabaseManager for fyo tests">
+    When testing code that depends on `fyo`, replace the IPC demux with `DatabaseManager` directly. See `fyo/README.md` for the initialization sequence.
+  </Step>
+</Steps>
+
+<Tip>
+Check `tests/helpers.ts` for shared setup utilities such as creating a test `Fyo` instance backed by an in-memory SQLite database.
+</Tip>

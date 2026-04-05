@@ -1,0 +1,129 @@
+---
+title: Setup Wizard
+description: The Setup Wizard runs on first launch and collects your company information, locale settings, bank name, fiscal year dates, and chart of accounts template.
+keywords: ['setup wizard', 'company setup', 'fiscal year', 'chart of accounts', 'currency', 'frappe books setup']
+---
+
+When you open Frappe Books for the first time, the Setup Wizard runs automatically. It collects the information needed to create your company's accounting file. You must complete all fields before the wizard lets you proceed.
+
+<Info>
+  The Setup Wizard only runs once. After you submit it, Frappe Books creates your local SQLite database and takes you to the main application. You can update most of these settings later in **Settings → Accounting Settings**.
+</Info>
+
+## What the wizard collects
+
+The form is divided into three sections: company identity, locale, and accounting configuration.
+
+### Company identity
+
+| Field | Description |
+|-------|-------------|
+| **Company Logo** | Optional image displayed on invoices and print templates. |
+| **Company Name** | The legal name of your business. This appears on all documents and cannot be changed after setup. |
+| **Full Name** | Your name as the primary contact. |
+| **Email** | A valid email address for the account. Frappe Books validates the format before accepting it. |
+
+<Note>
+  **Company Name** is read-only in Accounting Settings after setup completes. Choose the name carefully before submitting the wizard.
+</Note>
+
+### Locale
+
+| Field | Description |
+|-------|-------------|
+| **Country** | Select your country from the list. Frappe Books uses this to auto-populate the currency, fiscal year dates, and chart of accounts template. |
+| **Currency** | The default currency for all transactions. Auto-filled based on country; you can change it if needed. |
+
+When you select a country, the wizard automatically fills in the currency, fiscal year start and end dates, and suggests a matching chart of accounts template. You can override any of these values.
+
+### Accounting
+
+| Field | Description |
+|-------|-------------|
+| **Bank Name** | The name of your primary bank. Frappe Books creates a bank account entry under your chart of accounts using this name. |
+| **Chart of Accounts** | The account template to use as the starting structure for your books. |
+| **Fiscal Year Start Date** | The first day of your accounting year. Auto-filled from country data; editable. |
+| **Fiscal Year End Date** | The last day of your accounting year. If you set the start date, the end date fills in automatically as one year later (minus one day), and vice versa. |
+
+## Available chart of accounts templates
+
+Frappe Books includes country-specific chart of accounts templates. If no template exists for your country, the Standard Chart of Accounts is used.
+
+| Country | Template |
+|---------|----------|
+| Any | Standard Chart of Accounts |
+| U.A.E. | U.A.E - Chart of Accounts |
+| Canada | Plan comptable pour les provinces francophones |
+| France | Plan Comptable General |
+| Guatemala | Cuentas |
+| Hungary | Chart of Accounts |
+| Indonesia | Chart of Accounts |
+| India | India - Chart of Accounts |
+| Mexico | Plan de Cuentas |
+| Netherlands | Grootboekschema |
+| Nicaragua | Catalogo de Cuentas |
+| Singapore | Chart of Accounts |
+
+<Tip>
+  You can review and customize the generated chart of accounts after setup from **Accounting → Chart of Accounts**. Adding or renaming accounts at this stage is easier than doing so after transactions have been recorded.
+</Tip>
+
+## Completing the wizard
+
+<Steps>
+  <Step title="Fill in your company details">
+    Enter your **Company Name**, **Full Name**, and **Email**. Optionally upload a **Company Logo**.
+
+    All three text fields are required. The wizard's **Submit** button remains disabled until every required field has a value.
+  </Step>
+  <Step title="Select your country and currency">
+    Choose your **Country** from the dropdown. The **Currency**, fiscal year dates, and chart of accounts template fill in automatically.
+
+    Adjust the **Currency** if the auto-filled value does not match your needs.
+  </Step>
+  <Step title="Configure your accounting settings">
+    Enter your **Bank Name**. Confirm or adjust the **Chart of Accounts** template, **Fiscal Year Start Date**, and **Fiscal Year End Date**.
+
+    If you change the start date, the end date updates automatically to maintain a one-year range, and vice versa.
+  </Step>
+  <Step title="Submit the wizard">
+    Click **Submit**. Frappe Books validates all fields, then creates your local database and initializes the chart of accounts from the selected template.
+
+    The application opens the main window when setup is complete.
+  </Step>
+</Steps>
+
+## After setup completes
+
+Once the wizard finishes, Frappe Books takes you to the **Get Started** workspace, which shows a checklist of recommended setup tasks:
+
+- Review your chart of accounts
+- Add tax rates
+- Configure print settings
+- Create your first sales item and purchase item
+- Record your opening balances
+
+You can work through these tasks in any order. The checklist hides itself automatically when all items are marked complete.
+
+## Changing settings after setup
+
+Most wizard values can be updated after setup from **Settings → Accounting Settings**:
+
+- **Full Name** and **Email** are editable at any time.
+- **Country**, **Bank Name**, and **Company Name** are read-only after setup.
+- **Fiscal Year Start Date** and **Fiscal Year End Date** can be adjusted in the **Fiscal Year** section of Accounting Settings.
+
+<Warning>
+  Changing the fiscal year dates after transactions have been recorded can affect how reports group data. Make date changes before you begin entering historical transactions.
+</Warning>
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Chart of Accounts" icon="sitemap" href="/accounting/chart-of-accounts">
+    Review and customize the account structure created from your template.
+  </Card>
+  <Card title="Invoicing" icon="file-invoice" href="/accounting/invoicing">
+    Create your first sales invoice once your accounts are in place.
+  </Card>
+</Columns>

@@ -1,122 +1,98 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Frappe Books",
+  "theme": "almond",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#7c7c7c",
+    "light": "#070707",
+    "dark": "#c8c8c8"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "https://media.brand.dev/27af4dae-152b-493f-8385-6ed400f6a2a1.png",
+  "logo": {
+    "light": "https://media.brand.dev/378d1971-bc8a-419f-b5cc-ddf132c8cbc8.svg",
+    "dark": "https://media.brand.dev/378d1971-bc8a-419f-b5cc-ddf132c8cbc8.svg"
+  },
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/frappe/books"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/frappe/books"
+    }
+  },
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "User Guide",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "introduction",
+              "installation",
+              "setup-wizard"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Core Accounting",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "accounting/chart-of-accounts",
+              "accounting/journal-entries",
+              "accounting/invoicing",
+              "accounting/payments"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Inventory & Sales",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "inventory/items",
+              "inventory/stock-management",
+              "inventory/point-of-sale"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Reports",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "reports/general-ledger",
+              "reports/profit-and-loss",
+              "reports/balance-sheet",
+              "reports/trial-balance"
+            ]
+          },
+          {
+            "group": "Settings & Customization",
+            "pages": [
+              "settings/general-settings",
+              "settings/print-templates",
+              "settings/data-import-export"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Developer Guide",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Contributing",
             "pages": [
-              "api-reference/introduction"
+              "developer/architecture",
+              "developer/development-setup",
+              "developer/testing"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Internals",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "developer/models-and-schemas",
+              "developer/translations",
+              "developer/building-and-releasing"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    ]
   }
 }

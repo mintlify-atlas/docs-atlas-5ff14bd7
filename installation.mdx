@@ -1,0 +1,145 @@
+---
+title: Installation
+description: Download and install Frappe Books on Windows, macOS, or Linux using the GitHub releases page, Homebrew, or Flatpak.
+keywords: ['install frappe books', 'download', 'homebrew', 'flatpak', 'windows', 'macos', 'linux']
+---
+
+Frappe Books runs on Windows, macOS, and Linux. Choose the installation method that suits your platform.
+
+## System requirements
+
+Frappe Books is distributed as a pre-built installer — no runtime dependencies are required for regular use.
+
+| Requirement | Minimum |
+|-------------|---------|
+| Operating system | Windows 10, macOS 10.15 (Catalina), or a modern Linux distribution |
+| Disk space | 200 MB |
+| RAM | 512 MB |
+| Internet connection | Not required after installation |
+
+<Note>
+  If you are setting up a development environment rather than installing the production application, you need Node.js v20.18.1 and Yarn. See the [Development Setup](/developer/development-setup) guide for details.
+</Note>
+
+## Installation
+
+<Tabs>
+  <Tab title="Windows">
+    <Steps>
+      <Step title="Download the installer">
+        Go to the [GitHub releases page](https://github.com/frappe/books/releases) and download the latest `.exe` installer for Windows.
+      </Step>
+      <Step title="Run the installer">
+        Double-click the downloaded `.exe` file and follow the on-screen prompts. The installer places Frappe Books in your Program Files directory and creates a Start Menu shortcut.
+      </Step>
+      <Step title="Launch Frappe Books">
+        Open Frappe Books from the Start Menu or the desktop shortcut. On first launch, the Setup Wizard appears to configure your company.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="macOS">
+    <Steps>
+      <Step title="Choose your installation method">
+        You can install using a manual download or Homebrew.
+
+        **Manual download**
+
+        Go to the [GitHub releases page](https://github.com/frappe/books/releases) and download the latest `.dmg` file for macOS.
+
+        Open the `.dmg`, drag **Frappe Books** into your **Applications** folder, then eject the disk image.
+
+        **Homebrew**
+
+        If you have [Homebrew](https://brew.sh/) installed, run:
+
+        ```bash
+        brew install --cask frappe-books
+        ```
+
+        Homebrew downloads and installs Frappe Books into your Applications folder automatically.
+      </Step>
+      <Step title="Allow the app to open (first launch only)">
+        If macOS shows a security prompt the first time you open Frappe Books, go to **System Settings → Privacy & Security** and click **Open Anyway** next to the Frappe Books entry.
+      </Step>
+      <Step title="Launch Frappe Books">
+        Open Frappe Books from your Applications folder or Spotlight. The Setup Wizard appears on first launch.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Linux">
+    <Steps>
+      <Step title="Choose your installation method">
+        Three options are available on Linux.
+
+        **Manual download**
+
+        Go to the [GitHub releases page](https://github.com/frappe/books/releases) and download the package for your distribution:
+        - `.AppImage` — runs on most distributions without installation
+        - `.deb` — for Debian and Ubuntu-based distributions
+        - `.rpm` — for Fedora and Red Hat-based distributions
+
+        For the AppImage, mark the file as executable before running it:
+
+        ```bash
+        chmod +x frappe-books-*.AppImage
+        ./frappe-books-*.AppImage
+        ```
+
+        **Homebrew**
+
+        If you have [Homebrew](https://brew.sh/) installed on Linux, run:
+
+        ```bash
+        brew install --cask frappe-books
+        ```
+
+        **Flatpak**
+
+        If your distribution supports Flatpak, install Frappe Books from Flathub:
+
+        ```bash
+        flatpak install flathub io.frappe.books
+        ```
+
+        After installation, launch it with:
+
+        ```bash
+        flatpak run io.frappe.books
+        ```
+      </Step>
+      <Step title="Launch Frappe Books">
+        Open Frappe Books from your application launcher or run it from the terminal. The Setup Wizard appears on first launch.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## First launch
+
+When you open Frappe Books for the first time, no company file exists yet. The application displays the Setup Wizard, which guides you through:
+
+1. Entering your company name, contact details, and bank name
+2. Selecting your country and currency
+3. Configuring your fiscal year dates
+4. Choosing a chart of accounts template
+
+After you complete the wizard, Frappe Books creates a local SQLite database file and opens the main application window.
+
+<Tip>
+  The database file is stored on your local machine. You can back it up by copying the file to another location. To find its path, go to **Help → About** in the application menu.
+</Tip>
+
+## Offline operation
+
+Frappe Books is designed to work entirely without an internet connection. All data is stored locally in a SQLite file on your machine. You can use every feature — invoicing, reporting, POS — without being connected to a network.
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Setup Wizard" icon="wand-magic-sparkles" href="/setup-wizard">
+    Complete the first-launch setup to configure your company and accounting settings.
+  </Card>
+  <Card title="Chart of Accounts" icon="sitemap" href="/accounting/chart-of-accounts">
+    Review and customize the account structure generated for your business.
+  </Card>
+</Columns>

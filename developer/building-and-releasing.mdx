@@ -1,0 +1,93 @@
+---
+title: "Building & releasing"
+description: "Build Frappe Books installers for distribution"
+---
+
+Frappe Books uses [electron-builder](https://www.electron.build) to package the application into platform-specific installers. A GitHub Actions workflow handles automated releases.
+
+## Building for the current platform
+
+```bash
+yarn build
+```
+
+This runs `build/scripts/build.mjs`, which compiles the renderer with Vite, bundles the main process, and then invokes electron-builder to produce an installer for your operating system and architecture.
+
+### Output formats by platform
+
+| Platform | Output formats              |
+| -------- | --------------------------- |
+| macOS    | `.dmg`                      |
+| Windows  | `.exe` (NSIS installer)     |
+| Linux    | `.AppImage`, `.deb`, `.rpm` |
+
+Installers are written to the `dist/` directory at the project root.
+
+## Cross-platform builds
+
+By default, `yarn build` targets your current OS. Pass electron-builder CLI flags to target another platform:
+
+<Tabs>
+  <Tab title="Linux">
+    ```bash
+    yarn build --linux
+    ```
+  </Tab>
+  <Tab title="Windows">
+    ```bash
+    yarn build --win
+    ```
+  </Tab>
+  <Tab title="macOS">
+    ```bash
+    yarn build --mac
+    ```
+  </Tab>
+</Tabs>
+
+<Warning>
+Cross-platform builds have limitations. Building a macOS `.dmg` requires a macOS host. Windows and Linux builds can be cross-compiled from Linux or macOS in most cases, but native module compilation (`better-sqlite3`) may require the target platform. When in doubt, build on the target OS or use the CI workflow.
+</Warning>
+
+## electron-builder configuration
+
+The build is configured in `electron-builder-config.mjs` at the project root. This file specifies:
+
+- Application metadata (name, version, app ID)
+- File inclusion/exclusion patterns
+- Per-platform targets and signing configuration
+- Auto-update settings via `electron-updater`
+
+## Automated releases via GitHub Actions
+
+The release workflow lives at `.github/workflows/publish.yml`. It triggers on a new Git tag and:
+
+1. Builds installers for macOS (Intel), Windows, and Linux in parallel.
+2. Signs the macOS and Windows builds.
+3. Publishes the installers as assets on a GitHub Release.
+
+### macOS ARM release
+
+Apple Silicon builds are published separately using `scripts/publish-mac-arm.sh`:
+
+```bash
+yarn release
+```
+
+This script builds and notarizes the ARM64 `.dmg` and uploads it to the corresponding GitHub Release. Run it on an Apple Silicon machine after the main CI workflow completes.
+
+<Note>
+`yarn release` maps to `scripts/publish-mac-arm.sh`. You need valid Apple Developer credentials and notarization environment variables configured locally for this to succeed.
+</Note>
+
+## Version bumping
+
+The current version is defined in `package.json` under the `version` field. Update this field and create a matching Git tag to trigger the publish workflow:
+
+```bash
+# example: bump to 0.38.0
+git tag v0.38.0
+git push origin v0.38.0
+```
+
+The CI workflow reads the version from the tag and uses it for the release name and installer filenames.

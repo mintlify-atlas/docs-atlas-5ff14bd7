@@ -1,0 +1,119 @@
+---
+title: "Models & schemas"
+description: "How data models and database schemas work in Frappe Books"
+---
+
+Frappe Books separates the **shape** of data from the **behaviour** of data. Schemas define the former; models define the latter.
+
+## Schemas
+
+Schemas are static JSON files that describe the structure of a database table: its fields, their types, labels, and constraints. They live in the `schemas/` directory.
+
+### Schema types
+
+| Type          | Location              | Description                                                                 |
+| ------------- | --------------------- | --------------------------------------------------------------------------- |
+| **Core**      | `schemas/core/`       | System-level entities (settings, metadata)                                  |
+| **App**       | `schemas/app/`        | Business entities such as invoices, payments, and accounts                  |
+| **Regional**  | `schemas/regional/`   | Country-specific overrides that extend app or core schemas                  |
+| **Abstract**  | Any folder            | Base schemas with `isAbstract: true`; never used directly                   |
+| **Subclass**  | Any folder            | Schemas with an `extends` field that inherit from an abstract schema         |
+
+### How the final schema is built
+
+The schema builder in `schemas/schemas.ts` assembles a **final schema** at startup by:
+
+1. Applying regional overrides on top of matching non-regional schemas.
+2. Merging subclass schemas with their abstract parents to produce complete schemas.
+
+The result is what the database and model code actually use. You never work with abstract or regional schemas directly at runtime.
+
+<Note>
+Every schema has a `name` field that acts as the primary key. If you don't define it explicitly, the schema builder adds it automatically. The fields `label`, `description`, and `placeholder` are automatically translated by the frontend.
+</Note>
+
+## Models
+
+Models are TypeScript classes that extend `Doc` from `fyo/model/doc.ts`. They live in `models/` and add validation, computed fields, hooks, and other business logic on top of the data described by the schema.
+
+### Base classes
+
+| Class           | Location                       | Used for                                              |
+| --------------- | ------------------------------ | ----------------------------------------------------- |
+| `Doc`           | `fyo/model/doc.ts`             | Base class for all models; provides CRUD and hooks    |
+| `Invoice`       | `models/baseModels/Invoice/`   | Base for Sales Invoice and Purchase Invoice           |
+
+A minimal model looks like this:
+
+```typescript
+import { Doc } from 'fyo/model/doc';
+
+class Todo extends Doc {
+  title?: string;
+  date?: Date;
+  completed?: boolean;
+}
+```
+
+If a schema has no corresponding model class, `fyo` falls back to using `Doc` directly.
+
+### Regional models
+
+Regional models extend a base model and override only what differs per country. They are loaded dynamically at startup based on the `countryCode` stored in `SystemSettings`:
+
+```typescript
+// models/index.ts
+export async function getRegionalModels(countryCode: string) {
+  // returns the correct regional subclass for the given country
+}
+```
+
+## How a document flows through the system
+
+<Steps>
+  <Step title="Schema defines the fields">
+    A JSON schema file declares the fields, their types, and UI metadata.
+  </Step>
+  <Step title="fyo builds the final schema">
+    On startup, `fyo.initializeAndRegister` merges regional and subclass schemas into complete schemas and registers them on the `fyo` singleton.
+  </Step>
+  <Step title="Model adds business logic">
+    The matching `Doc` subclass handles validation, computed values, and lifecycle hooks (`beforeSave`, `afterSubmit`, etc.).
+  </Step>
+  <Step title="fyo manages CRUD">
+    Application code calls `fyo.doc.getDoc`, `fyo.doc.getNewDoc`, and `doc.save()`. These methods coordinate between the model and the database via IPC to the main process.
+  </Step>
+</Steps>
+
+## Adding a new field
+
+<Steps>
+  <Step title="Edit the schema JSON">
+    Open the relevant file in `schemas/app/` (or `schemas/regional/` for country-specific fields) and add a field entry:
+
+    ```json
+    {
+      "fieldname": "myField",
+      "label": "My Field",
+      "fieldtype": "Data",
+      "required": false
+    }
+    ```
+  </Step>
+  <Step title="Update the model class (if needed)">
+    Add a typed property to the corresponding `Doc` subclass in `models/` to get accurate TypeScript types:
+
+    ```typescript
+    class MyDoc extends Doc {
+      myField?: string;
+    }
+    ```
+  </Step>
+  <Step title="Handle dynamic behaviour in the model">
+    If the field needs a dynamic default, computed value, or validation, implement the relevant hook in the model class rather than in the schema JSON. Schemas must remain static data files.
+  </Step>
+</Steps>
+
+<Warning>
+Model files must not import Vue or any browser-only library at the top level. Tests run these files in a plain Node.js environment, and any browser import will break the test suite.
+</Warning>

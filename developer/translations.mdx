@@ -1,0 +1,81 @@
+---
+title: "Translations"
+description: "Contributing translations to support new languages"
+---
+
+Frappe Books supports 19 languages contributed by the community. Translations are stored as CSV files and applied at runtime.
+
+## Translation files
+
+Each language has a single CSV file in the `translations/` directory. The filename is the language code (e.g. `de.csv` for German, `zh-CN.csv` for Simplified Chinese).
+
+### Supported languages
+
+| Language              | File        |
+| --------------------- | ----------- |
+| Arabic                | `ar.csv`    |
+| Albanian              | `sq.csv`    |
+| Catalan               | `ca-ES.csv` |
+| Chinese (Simplified)  | `zh-CN.csv` |
+| Chinese (Traditional) | `zh-Hant.csv` |
+| Danish                | `da.csv`    |
+| Dutch                 | `nl.csv`    |
+| French                | `fr.csv`    |
+| German                | `de.csv`    |
+| Gujarati              | `gu.csv`    |
+| Hindi                 | `hi.csv`    |
+| Indonesian            | `id.csv`    |
+| Korean                | `ko.csv`    |
+| Nepali                | `np.csv`    |
+| Persian (Farsi)       | `fa.csv`    |
+| Portuguese            | `pt.csv`    |
+| Spanish               | `es.csv`    |
+| Swedish               | `sv.csv`    |
+| Turkish               | `tr.csv`    |
+
+## CSV format
+
+Each row maps a source string (English) to its translation:
+
+```
+"Source string","Translated string"
+"Sales Invoice","Verkaufsrechnung"
+"Customer","Kunde"
+```
+
+Leave the translated column empty for any string you haven't translated yet. The UI falls back to the English source string for missing entries.
+
+## Generating a translation template
+
+To produce a fresh CSV template that lists every translatable string currently in the codebase:
+
+```bash
+yarn script:translate
+```
+
+This runs `scripts/generateTranslations.ts` via `scripts/runner.sh`. The output is a CSV with all source strings and empty translation columns — use it as a starting point for a new language or to find strings added since you last updated your translation.
+
+<Note>
+Translations are applied at runtime. If any code evaluates a translatable string before the language map is loaded (e.g. at module load time as a global constant), the translation will not apply. Keep translation strings inside functions or component lifecycle hooks, not at the top level of a module.
+</Note>
+
+## Contributing a translation
+
+<Steps>
+  <Step title="Find or create your language file">
+    If a file for your language already exists in `translations/`, open it. If not, create a new file named with the appropriate BCP 47 language tag (e.g. `pl.csv` for Polish).
+  </Step>
+  <Step title="Fill in translations">
+    For each row, add the translated string in the second column. You do not have to translate every string in one go — partial translations are welcome.
+  </Step>
+  <Step title="Test locally">
+    Run Frappe Books in your language to verify that the strings render correctly and that nothing is truncated by the UI layout.
+  </Step>
+  <Step title="Submit a pull request">
+    Fork the repository, commit your CSV file, and open a pull request against the `master` branch. Reference any related issue in the PR description.
+  </Step>
+</Steps>
+
+<Tip>
+For guidance on the contribution process, see the [Contributing Translations](https://github.com/frappe/books/wiki/Contributing-Translations) wiki page.
+</Tip>

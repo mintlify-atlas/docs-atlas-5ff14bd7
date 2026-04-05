@@ -1,0 +1,79 @@
+---
+title: "Settings"
+description: "Configure company details, accounting preferences, and system options"
+---
+
+Access Settings from the left sidebar or from the top menu. Changes take effect immediately after you save.
+
+<Warning>
+  Some fields — including **Company Name** and **Country** — cannot be changed after the initial setup wizard completes. Set them carefully during onboarding.
+</Warning>
+
+## Accounting settings
+
+The Accounting Settings section controls core financial behavior for your company.
+
+| Field | Description |
+|---|---|
+| Company Name | Legal name of your business, printed on all documents |
+| Email | Company email address, used for communications |
+| Country | Determines default tax rules and currency formatting |
+| Currency | Base currency for all transactions |
+| Fiscal Year Start | First day of your accounting year |
+| Fiscal Year End | Last day of your accounting year |
+| Bank Name | Primary bank account name |
+| Round Off Account | Expense account used to post rounding differences |
+| Write Off Account | Expense account used to write off small balances |
+
+<Note>
+  The **Round Off Account** and **Write Off Account** must be non-group accounts under the Expense root type.
+</Note>
+
+## System and display settings
+
+| Field | Description |
+|---|---|
+| Date Format | Controls how dates appear throughout the app (e.g. `DD/MM/YYYY`) |
+| Theme | Choose between Light, Dark, or System default |
+
+## Inventory settings
+
+Enable the Inventory module to track stock levels, warehouse movements, and item valuations. Once enabled, this setting is permanent.
+
+| Field | Description |
+|---|---|
+| Enable Inventory | Activates stock management features across the app |
+| Default Warehouse | Warehouse used when no warehouse is specified on a transaction |
+| Valuation Method | How stock value is calculated — **FIFO** or **Moving Average** |
+
+<Warning>
+  Enabling Inventory is a one-way action. You cannot disable it after your first stock transaction is recorded.
+</Warning>
+
+### Additional modules
+
+<AccordionGroup>
+  <Accordion title="Discounting">
+    Enable **Discounting** to apply line-item or document-level discounts on invoices. Once enabled, this cannot be turned off.
+  </Accordion>
+  <Accordion title="Price Lists">
+    Enable **Price Lists** to manage multiple pricing tiers for items, useful for wholesale or regional pricing.
+  </Accordion>
+  <Accordion title="Invoice Returns">
+    Enable **Invoice Returns** to create return documents against existing sales or purchase invoices.
+  </Accordion>
+  <Accordion title="Loyalty Program">
+    Enable the **Loyalty Program** to assign and redeem loyalty points on customer transactions.
+  </Accordion>
+  <Accordion title="Partial Payments">
+    Enable **Partial Payments** to allow payments that settle only part of an outstanding invoice.
+  </Accordion>
+</AccordionGroup>
+
+## POS settings
+
+Enable **Point of Sale Without Inventory** to use the POS module independently of stock tracking. This is useful for service-based businesses that do not manage physical inventory.
+
+<Tip>
+  If you run a retail operation that does track stock, enable the Inventory module first and then configure POS from the same Settings page.
+</Tip>

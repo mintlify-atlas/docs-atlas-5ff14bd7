@@ -1,97 +1,78 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Frappe Books Documentation"
+description: "Free, open-source accounting software for small and medium businesses. Manage invoices, track expenses, run reports, and operate your Point of Sale — all offline."
 ---
 
-## Setting up
+Frappe Books is a modern desktop accounting application built for small and medium businesses. It runs fully offline on Windows, macOS, and Linux, stores all data locally in SQLite, and covers everything from double-entry bookkeeping to Point of Sale operations.
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Download and install Frappe Books on your operating system
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Setup Wizard" icon="wand-magic-sparkles" href="/setup-wizard">
+    Configure your company, fiscal year, and chart of accounts
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Invoicing" icon="file-invoice" href="/accounting/invoicing">
+    Create and manage sales and purchase invoices
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Financial Reports" icon="chart-line" href="/reports/general-ledger">
+    View your general ledger, profit & loss, and balance sheet
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## What you can do with Frappe Books
 
-Everything you need to create world-class documentation.
+<CardGroup cols={2}>
+  <Card title="Chart of Accounts" icon="sitemap" href="/accounting/chart-of-accounts">
+    Build and manage your account hierarchy for accurate bookkeeping
+  </Card>
+  <Card title="Journal Entries" icon="book" href="/accounting/journal-entries">
+    Record manual adjustments and transactions in the general ledger
+  </Card>
+  <Card title="Payments" icon="credit-card" href="/accounting/payments">
+    Track incoming and outgoing payments against invoices
+  </Card>
+  <Card title="Point of Sale" icon="cash-register" href="/inventory/point-of-sale">
+    Run retail transactions with an integrated POS interface
+  </Card>
+  <Card title="Inventory Management" icon="boxes-stacked" href="/inventory/stock-management">
+    Track stock movements, shipments, and purchase receipts
+  </Card>
+  <Card title="Data Import & Export" icon="file-arrow-up" href="/settings/data-import-export">
+    Bulk import records from CSV and export your data
+  </Card>
+</CardGroup>
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Get started quickly
 
-## Need inspiration?
+<Steps>
+  <Step title="Install Frappe Books">
+    Download the installer for your platform from the [GitHub releases page](https://github.com/frappe/books/releases) or install via Homebrew on macOS/Linux.
+  </Step>
+  <Step title="Run the Setup Wizard">
+    On first launch, the Setup Wizard guides you through creating your company, setting the fiscal year, and choosing your chart of accounts template.
+  </Step>
+  <Step title="Add your accounts and items">
+    Customize the Chart of Accounts to match your business, then add the items and services you sell or purchase.
+  </Step>
+  <Step title="Start recording transactions">
+    Create your first sales invoice, record a payment, and check the General Ledger to see double-entry accounting in action.
+  </Step>
+</Steps>
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+<Note>
+  Frappe Books is 100% offline-first. All your financial data is stored in a local SQLite file on your machine — no internet connection required for day-to-day use.
+</Note>
+
+## For developers
+
+If you want to contribute to Frappe Books or understand how it works under the hood, the Developer Guide covers the project architecture, development setup, testing, and how to build release packages.
+
+<CardGroup cols={2}>
+  <Card title="Architecture" icon="layer-group" href="/developer/architecture">
+    Understand the Electron main/renderer process model and code structure
+  </Card>
+  <Card title="Development Setup" icon="terminal" href="/developer/development-setup">
+    Get a local development environment running with hot reload
+  </Card>
+</CardGroup>

@@ -1,0 +1,154 @@
+---
+title: "Journal Entries"
+description: "Create and manage journal entries in Frappe Books to record adjustments, depreciation, opening balances, and other manual accounting transactions."
+---
+
+A journal entry is a direct, manual posting to the general ledger. Unlike invoices and payments — which create ledger entries automatically — journal entries give you full control over which accounts get debited and credited. Use them for transactions that don't fit the standard invoice or payment flow.
+
+## When to use journal entries
+
+<CardGroup cols={2}>
+  <Card title="Opening balances" icon="scale-balanced">
+    Record the account balances from your previous accounting system when you start using Frappe Books mid-year.
+  </Card>
+  <Card title="Depreciation" icon="chart-line-down">
+    Manually debit a depreciation expense account and credit the accumulated depreciation account each period.
+  </Card>
+  <Card title="Adjustments" icon="pen-to-square">
+    Correct posting errors, accrue expenses, or recognize prepaid items at period end.
+  </Card>
+  <Card title="Bank entries" icon="building-columns">
+    Record bank charges, interest income, or other items that appear on your bank statement but have no corresponding invoice.
+  </Card>
+</CardGroup>
+
+## Entry types
+
+When you create a journal entry, you select an **Entry Type** that describes its purpose. Frappe Books supports the following types:
+
+| Entry Type | Use |
+|---|---|
+| Journal Entry | General-purpose manual entry |
+| Bank Entry | Transactions originating from a bank account |
+| Cash Entry | Cash transactions not covered by a payment |
+| Credit Card Entry | Credit card charges and payments |
+| Debit Note | Record a debit note issued to a supplier |
+| Credit Note | Record a credit note issued to a customer |
+| Contra Entry | Transfer between cash and bank accounts |
+| Excise Entry | Excise-related tax postings |
+| Write Off Entry | Write off uncollectable receivables or payables |
+| Opening Entry | Set opening balances when migrating from another system |
+| Depreciation Entry | Record periodic asset depreciation |
+
+## Create a journal entry
+
+<Steps>
+  <Step title="Open Journal Entry">
+    Go to **Accounting** in the sidebar, then select **Journal Entry**. Click **New** to open a blank form.
+  </Step>
+  <Step title="Fill in the header fields">
+    Set the following fields at the top of the form:
+
+    | Field | Description |
+    |---|---|
+    | **Entry No** | Auto-generated from the number series (e.g. `JV-0001`). Read-only. |
+    | **Number Series** | The series used to generate the entry number. Defaults to `JV-`. |
+    | **Entry Type** | Select the type that best describes this entry (see table above). |
+    | **Date** | The posting date for the entry. Defaults to today. |
+
+  </Step>
+  <Step title="Add account lines">
+    In the **Account Entries** table, add one row for each account you want to post to.
+
+    Each row has three columns:
+
+    | Column | Description |
+    |---|---|
+    | **Account** | The account to post to. Grouped by Root Type in the selector. |
+    | **Debit** | Enter the debit amount for this line (leave blank or zero for credit lines). |
+    | **Credit** | Enter the credit amount for this line (leave blank or zero for debit lines). |
+
+    Add as many rows as you need. Each row can only have a value in **Debit** or **Credit** — not both.
+  </Step>
+  <Step title="Balance the entry">
+    The total of all **Debit** amounts must equal the total of all **Credit** amounts before you can submit. Frappe Books validates this balance when you submit.
+
+    <Tip>
+    A common pattern: debit one account and credit another in a two-line entry. For more complex entries, add as many lines as needed, ensuring the sums balance.
+    </Tip>
+  </Step>
+  <Step title="Add optional reference details">
+    In the **References** section you can set:
+
+    | Field | Description |
+    |---|---|
+    | **Reference Number** | An external reference such as a cheque number or bank reference. Hidden after submission if not set. |
+    | **Reference Date** | The date of the external reference document. |
+    | **User Remark** | A free-text note describing the purpose of the entry. Hidden after submission if not set. |
+    | **Attachment** | Attach a supporting document (bank statement, approval, etc.). |
+
+  </Step>
+  <Step title="Submit the journal entry">
+    Click **Submit** to post the entry to the ledger. Once submitted, the entry creates accounting ledger entries and cannot be edited.
+  </Step>
+</Steps>
+
+## Submit and cancel
+
+Journal entries follow a draft → submitted → cancelled lifecycle:
+
+- **Draft**: The entry is saved but not posted to the ledger. You can edit all fields.
+- **Submitted**: The entry is posted to the ledger. The Reference Number, Reference Date, User Remark, and Attachment fields become read-only and are hidden if they were left empty.
+- **Cancelled**: The entry is reversed. Frappe Books creates reversing ledger entries to undo the original posting.
+
+To cancel a submitted entry, open it and click **Cancel**. A cancelled entry cannot be re-submitted; create a new entry if you need to re-post.
+
+## View ledger entries
+
+After submitting a journal entry, use the **Ledger Entries** action (accessible from the form's action menu) to view the individual debit and credit postings in the Accounting Ledger Entry list.
+
+## Common journal entry patterns
+
+<AccordionGroup>
+  <Accordion title="Opening balance entry">
+    Use Entry Type **Opening Entry**. Add a line for each account that has a balance, entering the opening balance as a debit or credit depending on the account's root type. Use the **Temporary Opening** account (Account Type: Temporary) as the balancing entry until all balances are entered.
+
+    ```
+    Bank Account           Dr.  50,000
+    Debtors                Dr.  12,000
+      Temporary Opening         Cr.  62,000
+    ```
+  </Accordion>
+  <Accordion title="Depreciation entry">
+    Use Entry Type **Depreciation Entry**. Debit the depreciation expense account and credit the accumulated depreciation account for the asset.
+
+    ```
+    Depreciation           Dr.   5,000
+      Accumulated Depreciation   Cr.   5,000
+    ```
+  </Accordion>
+  <Accordion title="Accrued expense">
+    Use Entry Type **Journal Entry**. Debit the expense account and credit a liability account (e.g. Accrued Liabilities) to recognize an expense that has been incurred but not yet invoiced.
+
+    ```
+    Rent Expense           Dr.  10,000
+      Accrued Liabilities       Cr.  10,000
+    ```
+  </Accordion>
+  <Accordion title="Write-off entry">
+    Use Entry Type **Write Off Entry**. Debit a write-off expense account and credit the receivable account to remove an uncollectable debt from your books.
+
+    ```
+    Bad Debt Expense       Dr.   3,000
+      Debtors                    Cr.   3,000
+    ```
+  </Accordion>
+  <Accordion title="Bank charge">
+    Use Entry Type **Bank Entry**. Debit the bank charge expense account and credit the bank account.
+
+    ```
+    Bank Charges           Dr.     250
+      Bank Account               Cr.     250
+    ```
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,184 @@
+---
+title: "Payments"
+description: "Record customer receipts, supplier payments, and internal transfers in Frappe Books, and reconcile them against outstanding invoices."
+---
+
+A Payment in Frappe Books records the movement of money between your company and a party (customer or supplier). Payments update the outstanding amounts on linked invoices and post ledger entries that reflect the cash or bank movement.
+
+## Payment types
+
+Frappe Books supports two payment directions:
+
+| Payment Type | When to use | Party role |
+|---|---|---|
+| **Receive** | Money coming in from a customer | Customer or Both |
+| **Pay** | Money going out to a supplier | Supplier or Both |
+
+<Info>
+Frappe Books does not have a separate "Internal Transfer" type. To transfer between two bank or cash accounts, create a Journal Entry with a Contra Entry type, debiting the destination account and crediting the source account.
+</Info>
+
+## How payments affect the ledger
+
+The `getPosting` method in the Payment model defines the double-entry posting:
+
+<Tabs>
+  <Tab title="Receive (from customer)">
+    When you receive a payment from a customer:
+
+    | Account | Direction | Example |
+    |---|---|---|
+    | To Account (`paymentAccount`) | **Debit** | Cash / Bank |
+    | From Account (`account`) | **Credit** | Debtors (Receivable) |
+
+    Cash or Bank increases (debit), and the customer's receivable balance decreases (credit).
+  </Tab>
+  <Tab title="Pay (to supplier)">
+    When you pay a supplier:
+
+    | Account | Direction | Example |
+    |---|---|---|
+    | To Account (`paymentAccount`) | **Debit** | Creditors (Payable) |
+    | From Account (`account`) | **Credit** | Cash / Bank |
+
+    The supplier's payable balance decreases (debit), and your Cash or Bank decreases (credit).
+  </Tab>
+</Tabs>
+
+## Create a payment
+
+<Steps>
+  <Step title="Open Payment">
+    Go to **Accounting** in the sidebar and select **Payment**, then click **New**.
+  </Step>
+  <Step title="Set the payment type">
+    Choose **Receive** (customer payment) or **Pay** (supplier payment) from the **Payment Type** field. This controls which accounts are available in the account fields and which party roles are shown.
+  </Step>
+  <Step title="Select the party">
+    In the **Party** field, search for and select the customer or supplier. Frappe Books filters the party list based on the Payment Type:
+    - **Receive**: shows parties with role `Customer` or `Both`
+    - **Pay**: shows parties with role `Supplier` or `Both`
+
+    Selecting a party automatically determines the payment direction and pre-fills the **From Account** with the party's default receivable or payable account.
+  </Step>
+  <Step title="Set the posting date">
+    The **Posting Date** defaults to today. Change it to match the actual date the payment was received or made.
+  </Step>
+  <Step title="Choose the payment method">
+    Select the **Payment Method** (defaults to `Cash`). The available methods are configured under **Setup > Payment Method**. Each method has a type:
+
+    | Method Type | Behaviour |
+    |---|---|
+    | **Cash** | To Account filters to Cash-type accounts |
+    | **Bank** | To Account filters to Bank-type accounts. Requires Clearance Date and Ref. / Cheque No. |
+    | **Transfer** | Electronic transfer; To Account filters to Bank or Cash accounts |
+
+  </Step>
+  <Step title="Set account fields">
+    | Field | Label in UI | Description |
+    |---|---|---|
+    | `account` | **From Account** | The party-side account. For Receive: Receivable (Debtors). For Pay: Cash or Bank. |
+    | `paymentAccount` | **To Account** | The cash/bank-side account. For Receive: Cash or Bank. For Pay: Payable (Creditors). |
+
+    Both accounts are auto-populated based on the Payment Type and Payment Method, but you can override them.
+  </Step>
+  <Step title="Enter the amount">
+    Set the **Amount** — the total payment received or made. If you link invoices in the next step, the amount is automatically set to the sum of the linked invoice amounts.
+  </Step>
+  <Step title="Link to invoices (optional)">
+    In the **Payment Reference** section (`for` table), add one row per invoice you want to apply this payment to:
+
+    | Field | Description |
+    |---|---|
+    | **Type** | `Sales` (for Sales Invoices) or `Purchase` (for Purchase Invoices) |
+    | **Name** | The invoice number (dynamically linked based on Type) |
+    | **Amount** | The portion of this payment to apply to this invoice |
+
+    When you add a row, Frappe Books validates that:
+    - The invoice belongs to the selected party.
+    - The payment amount does not exceed the invoice's outstanding amount.
+    - If partial payment is not enabled in settings, the full outstanding amount must be paid.
+
+    <Tip>
+    Adding an invoice reference automatically sets the Party and Payment Type if they are not already set, saving you a step.
+    </Tip>
+  </Step>
+  <Step title="Add reference details (for bank payments)">
+    If the Payment Method type is **Bank**, you must fill in:
+
+    | Field | Description |
+    |---|---|
+    | **Ref. / Cheque No.** (`referenceId`) | The cheque number, wire transfer reference, or transaction ID |
+    | **Reference Date** | The date on the cheque or bank transaction |
+    | **Clearance Date** | The date the payment cleared in your bank account |
+
+  </Step>
+  <Step title="Apply a write-off (optional)">
+    If the payment amount is slightly less than the invoice outstanding (e.g. due to bank charges or currency rounding), set the **Write Off** amount. Frappe Books posts the write-off difference to the Write Off Account configured in **Accounting Settings**.
+
+    The **Amount Paid** field (read-only) shows `Amount − Write Off`.
+  </Step>
+  <Step title="Submit the payment">
+    Click **Submit**. Frappe Books:
+    - Posts the debit and credit ledger entries.
+    - Reduces the outstanding amount on each linked invoice by the allocated amount.
+    - Updates the party's total outstanding balance.
+  </Step>
+</Steps>
+
+## Payment field reference
+
+| Field | Type | Description |
+|---|---|---|
+| `name` | Data | Payment number (auto-generated from series `PAY-`) |
+| `numberSeries` | Link | Number series for auto-numbering |
+| `party` | Link | Customer or supplier |
+| `date` | Datetime | Posting date |
+| `paymentType` | Select | `Receive` or `Pay` |
+| `account` | Link | From Account (receivable for Receive; cash/bank for Pay) |
+| `paymentAccount` | Link | To Account (cash/bank for Receive; payable for Pay) |
+| `paymentMethod` | Link | Cash, Bank, or Transfer |
+| `clearanceDate` | Date | Bank clearance date (required for Bank method) |
+| `referenceId` | Data | Cheque or transaction reference number |
+| `referenceDate` | Date | Date on the cheque or transaction |
+| `amount` | Currency | Total payment amount |
+| `writeoff` | Currency | Amount written off (small balance clearance) |
+| `amountPaid` | Currency | `Amount − Write Off` (computed) |
+| `taxes` | Table | Tax summary (computed from linked invoices) |
+| `for` | Table | Invoice references (type, name, amount) |
+| `attachment` | Attachment | Supporting document (bank receipt, etc.) |
+
+## Payment methods
+
+Payment methods are configured under **Setup > Payment Method**. Each method has:
+
+- **Name**: The display name (e.g. Cash, HDFC Bank, Stripe)
+- **Type**: `Cash`, `Bank`, or `Transfer`
+- **Account**: The default bank or cash account to use as the To Account when this method is selected
+
+You can create as many payment methods as you have bank accounts or payment channels.
+
+## Reconciliation and outstanding invoices
+
+When you submit a payment linked to one or more invoices, Frappe Books automatically reduces the **Outstanding Amount** on each linked invoice. You can see the payment history on any invoice in its **Outstanding** section.
+
+To view all outstanding invoices for a party:
+
+1. Open the party record (Customer or Supplier).
+2. The party's **Outstanding Amount** field shows the net balance across all unpaid invoices.
+3. Use the **Accounts Receivable** or **Accounts Payable** reports under **Reports** to see a detailed aging breakdown.
+
+<Note>
+If you need to partially pay an invoice, enable **Partial Payment** in **Accounting Settings**. Without this setting, Frappe Books requires the payment amount to equal the full outstanding amount of each linked invoice.
+</Note>
+
+## Cancel a payment
+
+To cancel a submitted payment, open it and click **Cancel**. Frappe Books:
+- Creates reversing ledger entries to undo the original posting.
+- Restores the outstanding amount on each linked invoice.
+- Updates the party's outstanding balance.
+
+<Warning>
+Cancelling a payment that was automatically created when an invoice was submitted will also reopen the invoice's outstanding amount. You may need to re-apply the payment or submit a new one.
+</Warning>

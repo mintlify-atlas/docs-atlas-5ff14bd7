@@ -1,0 +1,80 @@
+---
+title: "Balance Sheet"
+description: "View your company's assets, liabilities, and equity at a point in time"
+---
+
+The Balance Sheet is a snapshot of your company's financial position at a specific date. Unlike the Profit and Loss report — which covers a period of time — the Balance Sheet answers the question: *what does the business own, owe, and have left over right now?*
+
+It is built on the fundamental accounting equation:
+
+```
+Assets = Liabilities + Equity
+```
+
+## Navigate to the report
+
+<Steps>
+  <Step title="Open Reports">
+    In the sidebar, click **Reports**.
+  </Step>
+  <Step title="Select Balance Sheet">
+    Under the Accounting section, click **Balance Sheet**.
+  </Step>
+  <Step title="Set the as-of date and run">
+    Choose the date up to which you want the snapshot, then click **Run**.
+  </Step>
+</Steps>
+
+## As-of date selection
+
+The Balance Sheet reflects cumulative balances of all transactions posted **up to and including** the selected date. Choose:
+
+| Selection | When to use |
+|---|---|
+| **End of fiscal year** | Annual reporting and tax filing |
+| **End of quarter** | Quarterly reviews |
+| **Today** | Real-time financial position |
+
+You can also view the report across multiple periods by adjusting the **Periodicity** setting, which adds a column per period so you can compare how the balance sheet has shifted over time.
+
+## Reading the report
+
+Each section shows a tree of accounts. Click on a group to expand it and see individual account balances.
+
+<CardGroup cols={2}>
+  <Card title="Assets" icon="building">
+    Everything the business owns or is owed — cash, accounts receivable, inventory, fixed assets, and prepaid expenses. Asset balances carry a debit balance.
+  </Card>
+  <Card title="Liabilities" icon="file-invoice">
+    Everything the business owes — accounts payable, loans, tax liabilities, and accrued expenses. Liability balances carry a credit balance.
+  </Card>
+  <Card title="Equity" icon="scale-balanced">
+    The owners' residual interest in the business — paid-in capital, retained earnings, and current period profit or loss. Equity carries a credit balance.
+  </Card>
+  <Card title="Net balance" icon="equals">
+    The report shows total Assets and total Liabilities + Equity at the bottom. These two totals must be equal.
+  </Card>
+</CardGroup>
+
+## Why the balance sheet must balance
+
+Double-entry accounting guarantees that every transaction affects at least two accounts by equal and opposite amounts. This means Assets must always equal Liabilities plus Equity. If the two sides do not match:
+
+<Warning>
+  An imbalanced Balance Sheet indicates a data integrity problem — likely caused by incorrectly posted journal entries or corrupted ledger data. Run the **Trial Balance** report first to identify which accounts have mismatched debit and credit totals, then trace the discrepancy in the **General Ledger**.
+</Warning>
+
+## Export the report
+
+<Tabs>
+  <Tab title="CSV">
+    Click **Export** in the toolbar and select **CSV** to download the full balance sheet as a spreadsheet, with one row per account.
+  </Tab>
+  <Tab title="PDF">
+    Click **Export** and select **PDF** to generate a formatted Balance Sheet statement suitable for sharing with stakeholders or auditors.
+  </Tab>
+</Tabs>
+
+<Tip>
+  Compare Balance Sheets across two periods to track changes in asset composition, debt levels, and equity growth — a quick way to measure the financial direction of your business.
+</Tip>

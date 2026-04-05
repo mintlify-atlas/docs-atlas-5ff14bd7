@@ -1,0 +1,73 @@
+---
+title: "Data Import & Export"
+description: "Bulk import records from CSV and export your data"
+---
+
+The Import Wizard lets you create multiple records at once by uploading a CSV file. This is useful when migrating data from another system or when you need to add a large number of items, customers, or transactions in a single step.
+
+## Supported document types
+
+You can import records for any document type that appears in the **Import Type** dropdown inside the wizard — including Items, Customers, Suppliers, Accounts, and more. The list reflects the schemas available in your current setup.
+
+## Import data
+
+<Steps>
+  <Step title="Open the Import Wizard">
+    Go to **Tools > Import Wizard** from the top menu or the left sidebar.
+  </Step>
+  <Step title="Select a document type">
+    Choose the document type you want to import from the **Import Type** dropdown. The wizard loads the correct column structure for that type.
+  </Step>
+  <Step title="Download the CSV template">
+    Click **Save Template** to download a CSV file pre-populated with the correct column headers. This template is the safest starting point for your data.
+  </Step>
+  <Step title="Fill in your data">
+    Open the downloaded CSV in a spreadsheet application. Add one record per row, using the column headers as a guide. Do not rename or reorder the columns.
+  </Step>
+  <Step title="Upload the file">
+    Back in the Import Wizard, click **Select File** and choose your filled-in CSV. The wizard parses the file and displays a preview of the rows.
+  </Step>
+  <Step title="Review and confirm">
+    Check the preview for any highlighted errors. When the data looks correct, click **Import Data** to create the records.
+  </Step>
+</Steps>
+
+<Tip>
+  Always download the template first. Column headers must match exactly what Frappe Books expects — the template guarantees the correct field names and order.
+</Tip>
+
+## Handling import errors
+
+If any rows contain invalid data, the wizard displays an error message in red below the Import Type selector and disables the **Import Data** button until the issue is resolved.
+
+<AccordionGroup>
+  <Accordion title="Validation errors in rows">
+    Open the CSV, fix the flagged rows, save the file, and re-upload it. The wizard re-validates on each upload.
+  </Accordion>
+  <Accordion title="Missing required fields">
+    Check that mandatory columns (such as item name or account type) are filled for every row. Blank required fields cause the entire import to fail.
+  </Accordion>
+  <Accordion title="Duplicate records">
+    If a record with the same name already exists, the import skips or overwrites depending on the document type. Review existing records before importing to avoid unintended duplicates.
+  </Accordion>
+  <Accordion title="Wrong document type selected">
+    If you upload a CSV built for one document type while a different type is selected, the column mapping will not match. Re-select the correct type and re-upload.
+  </Accordion>
+</AccordionGroup>
+
+## Export data
+
+You can export any list view in Frappe Books to CSV without leaving the list.
+
+<CardGroup cols={2}>
+  <Card title="Export from list view" icon="download">
+    Open any list (e.g. Items, Customers, Sales Invoices), click the **Export** button in the top-right corner, and save the CSV file to your machine.
+  </Card>
+  <Card title="Use for backups or reporting" icon="file-text">
+    Exported CSVs contain all visible columns in the list view. Adjust which columns are shown before exporting to control what is included.
+  </Card>
+</CardGroup>
+
+<Note>
+  Exported files are formatted to match the Import Wizard template structure for most document types, so you can use an export as the basis for a bulk edit and re-import.
+</Note>
